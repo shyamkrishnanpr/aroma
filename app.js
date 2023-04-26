@@ -12,6 +12,7 @@ const { cookie } = require('express-validator');
 var fs = require('fs');
 // const morgan = require('morgan')
 dotenv.config();
+const mongoose = require("mongoose")
 
 mongoose.connect(process.env.MONG_URI,{
     useNewUrlParser: true,
