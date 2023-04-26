@@ -4,13 +4,24 @@ const path = require('path');
 const session =require('express-session');
 const bodyParser = require("body-parser");
 const cookieparser = require("cookie-parser");
-const dbconnect = require('./config/connection')
+// const dbconnect = require('./config/connection')
 const dotenv = require('dotenv');
 const userRouter = require('./routes/user');
 const adminRouter = require('./routes/admin');
 const { cookie } = require('express-validator');
 var fs = require('fs');
 // const morgan = require('morgan')
+dotenv.config();
+
+mongoose.connect(process.env.MONG_URI,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+ })
+.then(()=>{
+    console.log("Database connected successfully")
+ })
+
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
@@ -20,8 +31,8 @@ app.use(bodyParser.urlencoded({extended:true}));
 // const smtpEmail = process.env.SMTP_EMAIL;
 // const smtpPassword = process.env.SMTP_PASSWORD
 
-dotenv.config();
-dbconnect.dbconnect();
+
+// dbconnect.dbconnect();
 
 app.use(session({
     secret : 'secret-key',
