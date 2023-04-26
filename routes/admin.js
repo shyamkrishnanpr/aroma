@@ -12,10 +12,10 @@ const auth = require('../middleware/adminAuth');
 
 // routes.use(session({secret:config.sessionSecret}))
 
-routes.use(bodyParser.json());
-routes.use(bodyParser.urlencoded({extended:true}));
+// routes.use(bodyParser.json());
+// routes.use(bodyParser.urlencoded({extended:true}));
 
-routes.set('view engine','ejs');
+// routes.set('view engine','ejs');
 // routes.set('views','./views/admin');
 
 const adminController = require("../controllers/adminController");
@@ -30,7 +30,7 @@ const  upload  = require('../middleware/multer');
 
 routes.get('/',auth.isLogout,adminController.loadLogin);
 
-routes.post('/',adminController.verifyLogin);
+routes.post('/adminLogin',adminController.verifyLogin);
 
 routes.get('/home',auth.isLogin,adminController.loadDashboard);
 

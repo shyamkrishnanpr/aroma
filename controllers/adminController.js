@@ -83,19 +83,22 @@ const loadLogin = async (req, res, next) => {
 
 const verifyLogin = async (req, res, next) => {
   try {
-    const email = req.body.email;
-    const password = req.body.password;
+    
 
-
-    if(email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD){
-      req.session.admin = email;
-      res.redirect("admin/home");
-
+const email = req.body.email
+    const password=req.body.password;
+    const passwordDB=process.env.ADMIN_PASSWORD
+    const usernameDB=process.env.ADMIN_EMAIL
+    if(password===passwordDB && email===usernameDB){
+        req.session.admin=req.body.email
+        res.redirect('/admin/home')
     }else{
-      
-          res.redirect("/admin/login");
-
+        req.session.loginErr='User Name or Password is incorrect'
+        res.redirect('/admin')
     }
+
+
+
 
 
   } catch (error) {
