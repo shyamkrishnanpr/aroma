@@ -1,0 +1,145 @@
+<%-include('../layouts/header') %>
+
+
+  <!--================Cart Area =================-->
+  <section class="cart_area">
+    <div class="container">
+        <% if(locals.countInCart!==0){
+            %>
+            <div class="cart_inner">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total</th>
+                                <th></th>
+                                
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% productData.forEach((product)=>{%>
+                                <tr >
+                                    <td>
+                                        <div class="media">
+                                            <div class="d-flex">
+                                                <img style="width: 100px;" src="/<%=product.productDetail.image[0].path %>" alt="">
+                                            </div>
+                                            <div class="media-body">
+                                                <p><%=product.productDetail.name %></p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5 class="price1"><span>&#8377 </span><%=product.productDetail.price %></h5>
+                                    </td>
+                                    <td>
+                                        
+                                        <div class="input-group" style="max-width: 120px">
+                                            <button class="btn btn-outline-primary js-btn-minus" onclick="changeQuantity('<%= product._id %>','<%= product.productDetail._id %>',-1)" type="button">
+                                              &minus;                                         
+                                            </button>
+    
+                                            <input readonly id="<%= product.productDetail._id %>" type="text" class="form-control text-center" min="1" name="quantity" value="<%= product.productQuantity%>" aria-label="Example text with button addon" aria-describedby="button-addon1" />
+                                            
+                                            <button class="btn btn-outline-primary js-btn-plus" onclick="changeQuantity('<%= product._id %>','<%= product.productDetail._id %>',1)" type="button">
+                                              &plus;
+                                            </button>
+                                          </div>
+                                          <% var a=product.productDetail.price%>
+                                          <% var b=product.productQuantity%>
+                                          <% var c=a*b%>
+                                         
+                                    </td>
+
+
+                                    <td>
+                                        <h5 id="sum1"><span>&#8377 </span><%=c%></h5>
+
+                                        
+                                    </td>
+                                    <td><button  onclick="removeProduct('<%= product._id %>','<%= product.productDetail._id %>')" class="btn btn-outline-danger">Remove</button></td>
+                                    
+                                </tr>
+
+
+                                <%
+                            })
+                                 %>
+
+                          <tr>
+                              <td>
+                              </td>
+                              <td>
+                              </td>
+                              <td>
+                                  <h5>Subtotal</h5>
+                              </td>
+                              <td> 
+                                    <h5 id="sum"><span>&#8377 </span><%=sum%></h5>
+                              
+                              </td>
+                          </tr>
+                          <tr class="out_button_area">
+                              <td class="d-none-l">
+
+                              </td>
+                              <td class="">
+
+                              </td>
+                              <td>
+
+                              </td>
+                              <td>
+                                  <div class="checkout_btn_inner d-flex align-items-center">
+                                      <a class="gray_btn" href="/">Continue Shopping</a>
+                                      <a class="primary-btn ml-2" href="/checkout">Proceed to checkout</a>
+                                  </div>
+                              </td>
+                          </tr>
+
+
+
+
+                            
+                    </tbody>
+                </table>
+            </div>
+        </div>
+ 
+
+
+            <%
+        }else{
+            %>
+            <div>
+                <h2>Your cart is empty</h2>
+                </div>
+
+
+            <%
+        } %>
+
+    </div>
+
+  
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<!--================End Cart Area =================-->
+
+
+
+<%-include('../layouts/footer') %>

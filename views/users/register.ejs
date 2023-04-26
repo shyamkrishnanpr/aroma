@@ -1,0 +1,138 @@
+<%-include('../layouts/loginHeader') %>
+
+<!--================Login Box Area =================-->
+<section class="login_box_area section-margin">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="login_box_img">
+          <div class="hover">
+            <h4>Already have an account?</h4>
+            <p>
+              There are advances being made in science and technology everyday,
+              and a good example of this is the
+            </p>
+            <a class="button button-account" href="/login">Login Now</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="login_form_inner register_form_inner">
+          <h3>Create an account</h3>
+		  <style>
+		/* Style for error message */
+.danger {
+  color: red;
+  font-size: 14px;
+}
+
+/* Style for success message */
+.success {
+  color: green;
+  font-size: 14px;
+}
+		  </style>
+
+          <form
+            class="row login_form"
+            action="/postRegister"
+            method="post"
+            id="form"
+          >
+            <div class="col-md-12 form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+                placeholder="Username"
+                onfocus="this.placeholder = ''"
+                onblur="this.placeholder = 'Username'"
+              />
+              <div class="error-message" id="usernameError"></div>
+            </div>
+			
+
+            <div class="col-md-12 form-group">
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Email Address"
+                onfocus="this.placeholder = ''"
+                onblur="this.placeholder = 'Email Address'"
+              />
+              <div class="error-message" id="emailError"></div>
+            </div>
+			
+
+            <div class="col-md-12 form-group">
+              <input
+                type="string"
+                class="form-control"
+                id="phonenumber"
+                name="phonenumber"
+                placeholder="phonenumber"
+                onfocus="this.placeholder = ''"
+                onblur="this.placeholder = 'phonenumber'"
+              />
+              <div class="error-message" id="phoneError"></div>
+            </div>
+			
+            <div class="col-md-12 form-group">
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="Password"
+                onfocus="this.placeholder = ''"
+                onblur="this.placeholder = 'Password'"
+              />
+              <div class="error-message" id="passwordError"></div>
+            </div>
+            <div class="col-md-12 form-group">
+              <input
+                type="password"
+                class="form-control"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                onfocus="this.placeholder = ''"
+                onblur="this.placeholder = 'Confirm Password'"
+              />
+              <div class="error-message" id="confirmpasswordError"></div>
+            </div>
+
+			<% if(locals.invalid){%>
+				<small class="text-danger"><%=err_message%></small>
+				<%}%> %>
+
+
+            <!-- <div class="col-md-12 form-group">
+              <div class="creat_account">
+                <input type="checkbox" id="f-option2" name="selector" />
+                <label for="f-option2">Keep me logged in</label>
+              </div>
+            </div> -->
+            <div class="col-md-12 form-group">
+              <button
+                type="submit"
+                value="submit"
+                class="button button-register w-100"
+              >
+                Register
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--================End Login Box Area =================-->
+
+<script src="/js/registerValidation.js"></script>
+
+<%-include('../layouts/footer') %>

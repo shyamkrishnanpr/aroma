@@ -1,0 +1,123 @@
+<%-include('../layouts/header') %>
+
+
+
+<!--================Order Details Area =================-->
+<section class="order_details section-margin--small">
+    <div class="container">
+      <p class="text-center billing-alert">Thank you. Your order has been received.</p>
+      <div class="row mb-5">
+        <div class="col-md-6 col-xl-6 mb-4 mb-xl-0">
+          <div class="confirmation-card">
+            <h3 class="billing-title">Order Info</h3>
+            <table class="order-rable">
+              <tr>
+                <td>Order number</td>
+                <td>: <%=orderDetails._id%></td>
+              </tr>
+              <tr>
+                <td>Date</td>
+                <td>: <%=orderDetails.orderDate  %></td>
+              </tr>
+              <tr>
+                <td>Total</td>
+                <td>:<span>&#8377 </span> <%=orderDetails.totalAmount %></td>
+              </tr>
+              <tr>
+                <td>Payment method</td>
+                <td>: <%=orderDetails.paymentMethod  %></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      
+        <div class="col-md-6 col-xl-6 mb-4 mb-xl-0">
+          <div class="confirmation-card">
+            <h3 class="billing-title">Shipping Address</h3>
+            <table class="order-rable">
+              <tr>
+
+
+                <td>Street</td>
+                <td> :    <%=orderDetails.housename  %>,<%=orderDetails.postoffice  %></td>
+              </tr>
+              <tr>
+                <td>City</td>
+                <td> :  <%=orderDetails.area %> </td>
+              </tr>
+              <tr>
+                <td>District</td>
+                <td> :   <%=orderDetails.district  %></td>
+              </tr>
+              <tr>
+                <td>Postcode</td>
+                <td>  :   <%=orderDetails.pin %></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="order_details_table">
+        <h2>Order Details</h2>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <td>
+                 
+            
+           
+              <tr>
+                <td>
+                  <h4>Subtotal</h4>
+                </td>
+                <td>
+                  <h5></h5>
+                </td>
+                <td>
+                  <p> <span>&#8377 </span><%=orderDetails.totalAmount  %></p>
+                </td>
+              </tr>
+              <!-- <tr>
+                <td>
+                  <h4>Shipping</h4>
+                </td>
+                <td>
+                  <h5></h5>
+                </td>
+                <td>
+                  <p>Flat rate: $50.00</p>
+                </td>
+              </tr> -->
+              <tr>
+                <td>
+                  <h4>Total</h4>
+                </td>
+                <td>
+                  <h5></h5>
+                </td>
+                <td>
+                  <h4> <span>&#8377 </span> <%=orderDetails.totalAmount  %></h4>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--================End Order Details Area =================-->
+
+
+
+
+
+
+<%-include('../layouts/footer') %>

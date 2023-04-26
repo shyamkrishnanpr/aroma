@@ -1,0 +1,84 @@
+<%-include('../layouts/header') %>
+
+
+
+
+<!--================Cart Area =================-->
+<section class="cart_area">
+    <div class="container">
+
+        <% if(locals.countInWishlist!==0){%>
+
+
+            <div class="cart_inner">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Add to cart</th>
+                                <th scope="col">Remove</th>
+    
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% wishlistData.forEach((product)=>{%>
+                                <tr >
+                                    <td>
+                                        <div class="media">
+                                            <div class="d-flex"> 
+                                                <a href="/productView/<%=product.productDetail._id%>" ><img class="card-img" style="width:100px;" src="/<%=product.productDetail.image[0].path %>" alt=""></a>
+                                               
+                                            </div>
+                                            <div class="media-body">
+                                                <p><%=product.productDetail.name %></p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5><span>&#8377 </span><%=product.productDetail.price %></h5>
+                                    </td>
+                                   
+                                    <td>
+                                        <button onclick="addToCart('<%= product.productDetail._id %>');removeFromWishlist('<%= product._id %>','<%= product.productDetail._id %>')" type="button" class="btn btn-outline-success">Add to Cart</button>
+       
+                                   <td>
+                                    <button onclick="removeFromWishlist('<%= product._id %>','<%= product.productDetail._id %>')" class="btn btn-outline-danger">Remove</button>
+                                    </td>
+
+                                    
+                                    
+                                </tr>
+    
+    
+                                <%
+                            })
+                                 %>
+
+<%
+
+        }else{%>
+            <div>
+                <h2>Your wishlist is empty</h2>
+                </div>
+
+
+            <%
+        } %>
+        
+                    
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<%-include('../layouts/footer') %>

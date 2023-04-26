@@ -1,0 +1,93 @@
+<%-include('../layouts/adminHeader') %>
+
+
+<!-- Include jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<!-- Include DataTables JavaScript file -->
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+<section class="content">
+    <div class="body_scroll">
+      <div class="block-header">
+        <div class="row">
+          <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>Admin Dashboard</h2>
+            <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button> -->
+          </div>
+          
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row clearfix">
+          <div class="col-lg-3 col-md-6 col-sm-6 col-6 text-center">
+            <div class="card">
+              
+            </div>
+          </div>
+        </div>
+        <!-- table order  -->
+        <div class="row clearfix">
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="card">
+              <div class="header">
+                <h2><strong>users</strong> details</h2>
+                
+              </div>
+
+              
+              <div class="table-responsive">
+                <table id="usersTable"  class="table table-hover c_table">
+                  <thead>
+                    <tr>
+                      <th style="width: 60px">No</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Mobile</th>
+                      <th>controlls</th>
+                    </tr>
+                  </thead>
+                  <% let count=1 %>
+                  <% users.forEach((user) => { %>
+                    <tr>
+                      <td><%=count  %></td>
+                      <td><%=user.username  %></td>
+                      <td><%=user.email  %></td>
+                      <td><%=user.phonenumber %></td>
+                      <td>
+                        <% if(user.isBlocked===false) { %>
+                          <a href="/admin/blockUser/<%= user._id%>" class="btn btn-danger">Block</a>
+                          <% }else{ %>
+                            <a href="/admin/unblockUser/<%= user._id%>" class="btn btn-success">Unblock</a>
+                            <%}%>
+                      </td>
+
+                    </tr>
+                    <% count++ %>
+                  <%   }); %>  
+                  
+                </table>
+
+              </div>
+
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <script>
+    $(document).ready(function () {
+        $('#usersTable').DataTable();
+    });
+</script>
+
+
+ 
+
+<%-include('../layouts/adminFooter') %>

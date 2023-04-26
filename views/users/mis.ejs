@@ -1,0 +1,895 @@
+<tr>
+    <td>
+      <% if(locals.sum<1000){%>
+          <h5 class="text-danger">Spend over 1000 and enjoy free delivery!</h5>
+         
+      <%}else{%>
+          
+      <%}
+       %>
+      
+    </td>
+    <td>
+    </td>
+    <td>
+        <h5>Shipping Charge</h5>
+    </td>
+    <td>
+      <% if(locals.sum<1000){%>
+         
+          <h5><span>&#8377 </span>49</h5>
+      <%}else{%>
+          <h5 class="text-success">Free</h5>
+      <%}
+       %>
+
+      
+        
+    </td>
+</tr>
+
+
+
+
+<div class="cupon_area">
+    <div class="check_title; col-md-6">
+        <p>Have a coupon? <p>
+          <input type="text" placeholder="Enter coupon code">
+          <a class="button button-coupon" href="#">Apply Coupon</a>
+    </div>
+    
+    
+</div>
+
+
+
+
+
+
+
+else if(req.body.paymentMethod==="Online") {
+    const orderDatas = await orderData.save();
+    const orderId = orderDatas._id;
+    const amount = orderDatas.totalAmount*100;
+
+    let options = {
+      amount: amount,  // amount in the smallest currency unit
+      currency: "INR",
+      receipt: ""+orderId,
+      payment_capture: 0
+    };
+    instance.orders.create(options, function(error, order) {
+      if (error) {
+        console.log(error)
+      } else {
+        res.json({order:order})
+      }
+      
+      console.log("the order id in server side issss",order);
+    });
+
+
+
+  }
+
+
+
+
+
+
+  
+  <div class="container d-flex">
+    <div class="form-group col-md-6">
+      <h6>Have a coupon?</h6>
+      <div class="input-group">
+        <input type="text" class="form-control coupon" id="checkout-form" name="coupon" placeholder="Coupon code" />
+        <span class="input-group-append"></span>
+      </div>
+
+
+      <div class="text-center">
+                  <button  class="button button-paypal" type="submit" id="apply-coupon-button" value="submit">
+                  apply coupon
+           </button>
+
+        </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const placeOrder = async (req, res, next) => {
+    try {
+      let invalid;
+      let couponDeleted;
+      let couponExpired;
+      let couponMinlimit;
+      const user = req.session.user;
+      const userData = await User.findOne({ _id: user });
+      const cartData = await cart.findOne({ userId: userData._id });
+      const objId = userData._id
+  
+    
+  
+      const data = req.body;
+  
+      if (data.coupon) {
+        invalid = await coupon.findOne({ couponName: data.coupon });
+  
+        console.log(req.session.sum<invalid?.minLimit)
+        if (invalid?.delete == true) {
+          couponDeleted = true;
+        }else if(invalid?.expirationTime&&new Date()>new Date(invalid.expirationTime)){
+          couponExpired = true;
+        }else if( req.session.sum<invalid?.minLimit){     
+          couponMinlimit = true;
+          
+        }
+      
+      } else {
+        invalid = 0;
+      }
+  
+      if (invalid == null) {
+        res.json({ invalid: true });
+      } else if (couponDeleted) {
+        res.json({ couponDeleted: true });
+      }else if(couponExpired){
+        res.json({couponExpired:true})
+      }else if(couponMinlimit){
+        res.json({couponMinlimit:true})
+      }
+      
+      else {
+        const discount = await checkCoupon(data, objId);
+        if (discount == true) {
+          res.json({ coupon: true });
+        } else {
+          if (cartData) {
+            const productData = await cart
+              .aggregate([
+                {
+                  $match: { userId: userData.id },
+                },
+                {
+                  $unwind: "$product",
+                },
+                {
+                  $project: {
+                    productItem: "$product.productId",
+                    productQuantity: "$product.quantity",
+                  },
+                },
+                {
+                  $lookup: {
+                    from: "products",
+                    localField: "productItem",
+                    foreignField: "_id",
+                    as: "productDetail",
+                  },
+                },
+                {
+                  $project: {
+                    productItem: 1,
+                    productQuantity: 1,
+                    productDetail: { $arrayElemAt: ["$productDetail", 0] },
+                  },
+                },
+                {
+                  $addFields: {
+                    productPrice: {
+                      $multiply: ["$productQuantity", "$productDetail.price"],
+                    },
+                  },
+                },
+              ])
+              .exec();
+  
+            const sum = productData.reduce((accumulator, object) => {
+              return accumulator + object.productPrice;
+            }, 0);
+            console.log("The sum in checkout is", sum);
+            if (discount == false) {
+              var total = sum;
+            } else {
+              let dis = sum * discount[0].discount;
+              if (dis > discount[0].maxLimit) {
+                total = sum - discount[0].maxLimit;
+              } else {
+                total = sum - dis;
+              }
+            }
+  
+            const orderData = new order({
+              userId: userData._id,
+              username: userData.username,
+              phonenumber: req.body.phonenumber,
+              housename: req.body.housename,
+              postoffice: req.body.postoffice,
+              area: req.body.area,
+              district: req.body.district,
+              state: req.body.state,
+              pin: req.body.pin,
+              orderItems: cartData.product,
+              totalAmount: total,
+              paymentMethod: req.body.paymentMethod,
+              orderDate: moment().format("MMM Do YY"),
+              deliveryDate: moment().add(3, "days").format("MMM Do YY"),
+            });
+  
+            if (req.body.paymentMethod === "COD") {
+              const orderDatas = await orderData.save();
+              const orderId = orderDatas._id;
+              await order
+                .updateOne({ _id: orderId }, { $set: { orderStatus: "Placed" } })
+                .then(() => {
+  
+                  res.json({ success: true ,orderId:orderId});
+  
+                  // console.log("The obj id before coupon is ", objId);
+                });
+                await coupon.updateOne(
+                  { couponName: data.coupon },
+                  { $push: { users: { userId: objId } } }
+                );
+  
+            } 
+          } else {
+  
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
+
+
+  const getCategoryWisePage = async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 3;
+      const skip = (page - 1) * limit;
+      const count = await products
+      .find({ category: id, delete: false })
+      .populate("category")
+      .count();
+      const totalPages = Math.ceil(count / limit);
+      const pageNumbers = [];
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+  
+      const user = req.session.user;
+      
+      const category = await categories.find({ delete: false });
+  
+  
+      const product = await products
+        .find({ delete: false })
+        .find({ category: id, delete: false })
+        .populate("category")
+        .skip(skip)
+        .limit(limit);
+  
+      const brands = await products.distinct("brand");
+  
+      const productCount = await products
+        .find({ category: id, delete: false })
+        .populate("category")
+        .count();
+      // console.log(productCount)
+      res.render("users/shop", {
+        user,
+        product,
+        category,
+        productCount,
+        brands,
+        page,
+        totalPages,
+        pageNumbers,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
+
+
+
+  const getCategoryWisePage = async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 3;
+      const skip = (page - 1) * limit;
+      const count = await products
+        .find({ category: id, delete: false })
+        .populate("category")
+        .count();
+      const totalPages = Math.ceil(count / limit);
+      const pageNumbers = [];
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+  
+      const user = req.session.user;
+  
+      const category = await categories.find({ delete: false });
+  
+      const sort = {};
+      const sortOption = req.query.sort;
+      if (sortOption === "low-to-high") {
+        sort.price = 1;
+      } else if (sortOption === "high-to-low") {
+        sort.price = -1;
+      }
+  
+      const product = await products
+        .find({ delete: false })
+        .find({ category: id, delete: false })
+        .populate("category")
+        .sort(sort)
+        .skip(skip)
+        .limit(limit);
+  
+      const brands = await products.distinct("brand");
+  
+      const productCount = await products
+        .find({ category: id, delete: false })
+        .populate("category")
+        .count();
+  
+      res.render("users/shop", {
+        user,
+        product,
+        category,
+        productCount,
+        brands,
+        page,
+        totalPages,
+        pageNumbers,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
+
+
+
+
+
+  <td><!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModa-<%= banner._id %>">
+      Edit
+    </button>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModa-<%= banner._id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit Banner</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id="editBannerForm" action="/admin/editBanner/<%= banner._id %>"  method="post" onsubmit="return submit(event)" >
+          <div class="modal-body">
+            <div class="d-flex justify-content-around">
+              <div class="d-flex flex-column w-100">
+                <label for="offerType">Offer Type</label>
+                <input id="offerTypeInput" class="rounded-2" required value="<%=banner.offerType  %>" name="offerType" style="width: 99%; height: 38px" type="text" />
+                </div>
+          </div>
+          <div class="d-flex justify-content-around">
+            <div class="d-flex flex-column w-100">
+              <label for="bannerText">Banner Text</label>
+              <input id="bannerTextInput" class="rounded-2" required value="<%=banner.bannerText  %>" name="bannerText" style="width: 99%; height: 38px" type="text" />
+              </div>
+        </div>
+        <div class="d-flex justify-content-around">
+          <div class="d-flex flex-column w-100">
+            <label for="couponName">Coupon Code</label>
+            <input id="couponNameInput" class="rounded-2" required value="<%=banner.couponName  %>" name="couponName" style="width: 99%; height: 38px" type="text" />
+            </div>
+      </div>                                            
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit"  class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </form>
+      </div>
+    </div></td>
+
+  
+
+
+
+
+
+
+
+
+
+    
+const orderSuccess = async (req, res, next) => {
+  try {
+    const user = req.session.user;
+
+    const id = req.params.id
+ 
+    const userData = await User.findOne({_id:user})
+    const orderDetails = await order.findOne({userId:userData._id}).sort({createdAt:-1})
+
+    const objId = new mongoose.Types.ObjectId(id)
+
+    console.log("the object id isss",objId)
+    const productData = await order.aggregate([
+      {
+        $match:{_id:id}
+      },
+      {
+        $unwind:"$orderItems"
+      },
+      {
+        $project:{
+          productItem:"$orderItems.productId",
+          productQuantity:"$orderItems.quantity",
+          address:1,
+          name:1,
+          phonenumber:1
+
+        }
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "productItem",
+          foreignField: "_id",
+          as: "productDetail",
+        },
+      },
+      {
+        $project:{
+          productItem:1,
+          productQuantity:1,
+          address:1,
+          name:1,
+          phonenumber:1,
+          productDetail: { $arrayElemAt: ["$productDetail", 0] },
+        }
+      },
+
+
+
+
+    ]).sort({ createdAt: -1 });
+
+console.log("product Data in success is ",productData)
+    
+    // console.log("the order Details are ",orderDetails)
+
+    res.render("users/orderSuccess", { user,orderDetails,productData });
+
+    const userId = await User.findOne({ _id: user }, { userId: 1 });
+    console.log("The userId issss", userId);
+    const cartId = userId._id;
+    await cart.deleteOne({ userId: cartId });
+    
+   
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
+
+
+<% productData.forEach((product)=>{%>
+  <tr>
+   
+<td>
+   <p><%=product.productDetail.name  %></p>
+    </td>
+    <td>
+      <h5>x <%=product.productQuantity  %> </h5>
+    </td>
+    <td>
+      <% var a=product.productDetail.price%>
+                              <% var b=product.productQuantity%>
+                              <% var c=a*b%>
+      <p><span>&#8377 </span><%=c%></p>
+    </td>
+  </tr>
+  <%
+    }) %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const addToCart = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const objId = new mongoose.Types.ObjectId(id);
+    const user = req.session.user;
+
+    const proObj = {
+      productId: objId,
+      quantity: 1,
+    };
+    const userData = await User.findOne({ _id: user });
+    const userCart = await cart.findOne({ userId: userData._id });
+
+
+    const product = await products.findById(objId);
+    if (!product) {
+      return res.json({ success: false, message: 'Product not found' });
+    }
+
+    if (product.stock < 1) {
+    
+      return res.json({ success: false, message: 'Product out of stock' });
+    }
+
+
+    if (userCart) {
+      const proExist = userCart.product.findIndex(
+        (product) => product.productId == id
+      );
+      if (proExist != -1) {
+        await cart.aggregate([
+          {
+            $unwind: "$product",
+          },
+        ]);
+        await cart.updateOne(
+          { userId: userData._id, "product.productId": objId },
+          { $inc: { "product.$.quantity": 1 } }
+        );
+        res.json({ success: true });
+      } else {
+        cart
+          .updateOne({ userId: userData._id }, { $push: { product: proObj } })
+          .then(() => {
+            res.json({ success: true });
+          });
+      }
+    } else {
+      const newCart = new cart({
+        userId: userData.id,
+        product: [
+          {
+            productId: objId,
+            quantity: 1,
+          },
+        ],
+      });
+      newCart.save().then(() => {
+        res.json({ success: true });
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const checkStock = (quantity, stock) => {
+  if (quantity => stock) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+const changeQuantity = async (req, res, next) => {
+  try {
+
+
+    const data = req.body;
+    const objId = new mongoose.Types.ObjectId(data.product);
+    const product = await products.findById(objId);
+    const currentStock = product.stock;
+
+    if (!checkStock(data.quantity, currentStock)) {
+      res.json({ success: false, message: "Sorry, there is not enough stock to fulfill your request." });
+      return;
+    }
+
+
+    if (data.count == -1 && data.quantity == 1) {
+      
+      cart
+        .updateOne(
+          { _id: data.cart, "product.productId": objId },
+          { $pull: { product: { productId: objId } } }
+        )
+        .then(() => {
+          res.json({ quantity: true });
+        })
+        .catch((err) => console.log(err));
+    } else {
+      cart
+        .updateOne(
+          { _id: data.cart, "product.productId": objId },
+          { $inc: { "product.$.quantity": data.count } }
+        )
+        .then(async () => {
+          const productData = await cart
+            .aggregate([
+              {
+                $match: { _id: new mongoose.Types.ObjectId(data.cart) },
+              },
+              {
+                $unwind: "$product",
+              },
+              {
+                $project: {
+                  productItem: "$product.productId",
+                  productQuantity: "$product.quantity",
+                },
+              },
+              {
+                $lookup: {
+                  from: "products",
+                  localField: "productItem",
+                  foreignField: "_id",
+                  as: "productDetail",
+                },
+              },
+              {
+                $project: {
+                  productItem: 1,
+                  productQuantity: 1,
+                  productDetail: { $arrayElemAt: ["$productDetail", 0] },
+                },
+              },
+              {
+                $addFields:{
+                  productPrice:{
+                    $multiply:["$productQuantity","$productDetail.price"]
+                  }
+                }
+              },
+              {
+                $group:{
+                  _id:null,
+                  total:{
+                    $sum:{$multiply:["$productQuantity","$productDetail.price"]}
+                  }
+                }
+              }
+
+
+            ])
+            .exec();
+          res.json({ success: true, productData: productData });
+        });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+else if (req.body.paymentMethod === "Online") {
+        
+  const orderDatas = await orderData.save()
+  const orderId = orderDatas._id
+  const amount = orderData.totalAmount * 100;
+
+  var options = {
+    amount: amount, // amount in the smallest currency unit
+    currency: "INR",
+    receipt: "" + orderId,
+  };
+
+  instance.orders.create(options, function (err, order) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(order);
+      res.json({ order: order });
+    }
+  });
+}
+
+
+
+
+
+
+const placeOrder = async (req, res, next) => {
+  try {
+    let invalid;
+    let couponDeleted;
+    let couponExpired;
+    let couponMinlimit;
+    const user = req.session.user;
+    const userData = await User.findOne({ _id: user });
+    const cartData = await cart.findOne({ userId: userData._id });
+    const objId = userData._id;
+
+    if (cartData) {
+      const productData = await cart
+        .aggregate([
+          {
+            $match: { userId: userData.id },
+          },
+          {
+            $unwind: "$product",
+          },
+          {
+            $project: {
+              productItem: "$product.productId",
+              productQuantity: "$product.quantity",
+            },
+          },
+          {
+            $lookup: {
+              from: "products",
+              localField: "productItem",
+              foreignField: "_id",
+              as: "productDetail",
+            },
+          },
+          {
+            $project: {
+              productItem: 1,
+              productQuantity: 1,
+              productDetail: { $arrayElemAt: ["$productDetail", 0] },
+            },
+          },
+          {
+            $addFields: {
+              productPrice: {
+                $multiply: ["$productQuantity", "$productDetail.price"],
+              },
+            },
+          },
+        ]) 
+        .exec();
+
+      const sum = productData.reduce((accumulator, object) => {
+        return accumulator + object.productPrice;
+      }, 0);
+      console.log("The sum in checkout is", sum);
+
+
+
+
+
+
+
+      const orderData = new order({
+        userId: userData._id,
+        username: userData.username,
+        phonenumber: req.body.phonenumber,
+        housename: req.body.housename,
+        postoffice: req.body.postoffice,
+        area: req.body.area,
+        district: req.body.district,
+        state: req.body.state,
+        pin: req.body.pin,
+        orderItems: cartData.product,
+        totalAmount: sum,
+        paymentMethod: req.body.paymentMethod,
+        orderDate: moment().format("MMM Do YY"),
+        deliveryDate: moment().add(3, "days").format("MMM Do YY"),
+      });
+
+      if (req.body.paymentMethod === "COD") {
+        const orderDatas = await orderData.save();
+        const orderId = orderDatas._id;
+        await order
+          .updateOne({ _id: orderId }, { $set: { orderStatus: "Placed" } })
+          .then(() => {
+            res.json({ success: true, orderId: orderId });
+          });
+
+
+          
+        // await coupon.updateOne(
+        //   { couponName: data.coupon },
+        //   { $push: { users: { userId: objId } } }
+        // );
+      } else if (req.body.paymentMethod === "Online") {
+        
+        const orderDatas = await orderData.save()
+        const orderId = orderDatas._id
+        const amount = orderData.totalAmount * 100;
+
+        var options = {
+          amount: amount, // amount in the smallest currency unit
+          currency: "INR",
+          receipt: "" + orderId,
+        };
+
+        instance.orders.create(options, function (err, order) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(order);
+            res.json({ order: order });
+          }
+        });
+      }
+    } else {
+      // handle case when no cart data is found
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

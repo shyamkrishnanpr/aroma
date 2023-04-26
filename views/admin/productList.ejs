@@ -1,0 +1,85 @@
+﻿<%-include('../layouts/adminHeader') %>
+
+    <section class="content">
+        <div class="body_scroll">
+            <div class="block-header">
+                <div class="row">
+                    <div class="col-lg-7 col-md-6 col-sm-12">
+                        <h2>Admin Dashboard</h2>
+                        <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button> -->
+                    </div>
+
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-6 text-center">
+                        <div class="card">
+
+                        </div>
+                    </div>
+                </div>
+                <!-- table order  -->
+                <div class="row clearfix">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>Product</strong> Management</h2>
+                            </div>
+                            <a type="button" href="/admin/addProduct" class="btn btn-primary">ADD PRODUCTS</a>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover c_table">
+                                  <thead>
+                                    <tr>
+                                      <th style="width: 60px">No</th>
+                                      <th>Image</th>
+                                      <th>Name</th>
+                                      <th>Brand</th>
+                                      <th>Price</th>
+                                      <th>stock</th>
+                                      <th>Action</th>
+                                       
+                                    </tr>
+                                  </thead>
+                                  <% let count=1 %>
+                                  <% product.forEach((product) => { %>
+                                    <tr>
+                                      <td><%=count  %></td>
+                                      <td><% for(let i=0;i<3;i++){
+                                        %> <img style="height: 2em; width: 2.5em;"  src="/<%=product?.image[i]?.path%>" alt="">
+                                        <%
+                                      }  %></td>
+                                      <td><%=product.name %></td>
+                                      <td><%=product.brand %></td>
+                                      <td><%=product.price %></td>
+                                      <td><%=product.stock %></td>
+                                      <td>
+                                        <a type="button" href="/admin/editProduct/<%=product._id%>" class="btn btn-primary">EDIT </a>
+                                        <% if(product.delete===false) { %>
+                                          <a href="/admin/deleteProduct/<%= product._id%>" class="btn btn-danger">DELETE</a>
+                                          <% }else{ %>
+                                            <a href="/admin/restoreProduct/<%= product._id%>" class="btn btn-success">RESTORE</a>
+                                            <%}%>
+                                      </td>
+
+                                    </tr>
+                                    <% count++ %>
+                                  <%   }); %>  
+                                  
+                                </table>
+                
+                              </div>
+
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <%-include('../layouts/adminFooter') %>

@@ -1,0 +1,303 @@
+﻿<%-include('../layouts/adminHeader') %>
+<section class="content">
+  <div class="body_scroll">
+    <div class="block-header">
+      <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+          <h2>Admin Dashboard</h2>
+          <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button> -->
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-lg-3 col-md-6 col-sm-6 col-6 text-center">
+          <div class="card"></div>
+        </div>
+      </div>
+      <!-- table order  -->
+      <div class="row clearfix">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <div class="card">
+            <div class="header">
+              <h2><strong></strong></h2>
+            </div>
+
+            <div class="mt-3">
+              <div class="row">
+      
+                
+                <div class="col-md-6 col-12 ms-5">
+                  <canvas id="paymentMethod"></canvas>
+
+                </div>
+                <div class="col-md-6 col-12 ms-5">
+                  <canvas id="orderStatus"></canvas>
+                </div>
+
+                
+      
+              </div>
+      
+            </div>
+
+
+
+
+            <div class="d-flex align-items-center justify-content-between mt-5">
+
+              <div class="shadow p-3 mb-3  rounded bg-white" style="height: 90px;width: 325px;">
+    
+                <div class="d-flex align-items-center justify-content-center">
+                  <h6 class="text-info">Today's Revenue</h6>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <h2 style="color:gray" id="todayRevenue"><%=dailyRevenue %>
+                  </h2>
+                </div>
+    
+              </div>
+    
+              <div class=" shadow p-3 mb-3  rounded bg-white" style="height: 90px;width: 325px;">
+    
+                <div class="d-flex align-items-center justify-content-center">
+                  <h6 class="text-info">monthly Revenue</h6>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <h2 style="color:gray" id="monthlyRevenue"><%=monthlyRevenue %>
+                  </h2>
+                </div>
+    
+              </div>
+    
+              <div class=" shadow p-3 mb-3  rounded bg-white" style="height: 90px;width: 325px;">
+    
+                <div class="d-flex align-items-center justify-content-center">
+                  <h6 class="text-info">Total Revenue</h6>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <h2 style="color:gray" id="totalRevenue"><%=totalRevenue %>
+                  </h2>
+                </div>
+    
+    
+              </div>
+    
+            </div>
+    
+            <div class="d-flex align-items-center justify-content-between ">
+    
+              <div class="shadow p-3 mb-3  rounded bg-white" style="height: 90px;width: 325px;">
+    
+                <div class="d-flex align-items-center justify-content-center">
+                  <h6 class="text-info">Total orders</h6>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <h2 style="color:gray" class="">
+                    <%=  allOrders %>
+                  </h2>
+                </div>
+    
+              </div>
+    
+              <div class=" shadow p-3 mb-3  rounded bg-white" style="height: 90px;width: 325px;">
+    
+                <div class="d-flex align-items-center justify-content-center">
+                  <h6 class="text-info">Active users</h6>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <h2 style="color:gray" class="">
+                    <%=activeUsers %>
+                  </h2>
+                </div>
+    
+              </div>
+    
+              <div class=" shadow p-3 mb-3  rounded bg-white" style="height: 90px;width: 325px;">
+    
+                <div class="d-flex align-items-center justify-content-center">
+                  <h6 class="text-info">Number of products</h6>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <h2 style="color:gray" class="">
+                    <%=productsCount %>
+                  </h2>
+                </div>
+    
+    
+              </div>
+    
+            </div>
+
+
+            <div class="d-flex align-items-center justify-content-between ">
+    
+              <div class="shadow p-3 mb-3  rounded bg-white" style="height: 90px;width: 325px;">
+    
+                <div class="d-flex align-items-center justify-content-center">
+                  <h6 class="text-info">Pending orders</h6>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <h2 id="pending" style="color:gray" class="">
+                    <%=  pending %>
+                  </h2>
+                </div>
+    
+              </div>
+    
+              <div class=" shadow p-3 mb-3  rounded bg-white" style="height: 90px;width: 325px;">
+    
+                <div class="d-flex align-items-center justify-content-center">
+                  <h6 class="text-info">Shippped orders</h6>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <h2 id="shipped" style="color:gray" class="">
+                    <%=shipped %>
+                  </h2>
+                </div>
+    
+              </div>   
+              <div class=" shadow p-3 mb-3  rounded bg-white" style="height: 90px;width: 325px;">
+    
+                <div class="d-flex align-items-center justify-content-center">
+                  <h6 class="text-info">placed Orders </h6>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <h2 id="placed" style="color:gray" class="">
+                    <%=placed %>
+                  </h2>
+                </div>
+              </div> 
+            </div>
+
+
+            
+            <div class="d-flex align-items-center justify-content-between ">
+    
+              <div class="shadow p-3 mb-3  rounded bg-white" style="height: 90px;width: 325px;">
+    
+                <div class="d-flex align-items-center justify-content-center">
+                  <h6 class="text-info">Cancelled orders</h6>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <h2 id="cancelled" style="color:gray" class="">
+                    <%=  cancelled %>
+                  </h2>
+                </div>
+    
+              </div>
+    
+              <div class=" shadow p-3 mb-3  rounded bg-white" style="height: 90px;width: 325px;">
+    
+                <div class="d-flex align-items-center justify-content-center">
+                  <h6 class="text-info">Online orders</h6>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <h2 id="online" style="color:gray" class="">
+                    <%=online%>
+                  </h2>
+                </div>
+    
+              </div>   
+              <div class=" shadow p-3 mb-3  rounded bg-white" style="height: 90px;width: 325px;">
+    
+                <div class="d-flex align-items-center justify-content-center">
+                  <h6 class="text-info">COD orders </h6>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                  <h2 id="cod" style="color:gray" class="">
+                    <%=cod %>
+                  </h2>
+                </div>
+              </div> 
+            </div>
+    
+          </div>
+    
+    
+    
+    
+        </div>
+        </div>
+        </div>
+
+
+     
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+
+<script>
+    let pending = parseInt(document.getElementById("pending").innerHTML);
+      let shipped = parseInt(document.getElementById("shipped").innerHTML);
+      let placed = parseInt(document.getElementById("placed").innerHTML);
+      let cancelled = parseInt(document.getElementById("cancelled").innerHTML);
+     
+      var myChart5 = new Chart("orderStatus", {
+        type: "bar",
+        data: {
+          labels: ["Pending", "Shipped", "placed", 'cancelled'],
+          datasets: [
+            {
+              label: "orderStatus",
+              backgroundColor: ["#C2C9C8", "#0B6464", "#515454", "#3E5A5A"],
+              data: [pending, shipped, placed, cancelled],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true, // start Y-axis from zero
+                 // set the step size for the Y-axis values
+              },
+            }],
+          },
+        },
+      });
+
+
+
+      let cod = parseInt(document.getElementById("cod").innerHTML);
+      let online = parseInt(document.getElementById("online").innerHTML);
+      var ctx = document.getElementById('paymentMethod').getContext('2d');
+      var myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ["COD", "Online"],
+          datasets: [{
+            label: 'Payment Method',
+            data: [cod, online],
+            backgroundColor: ["#C2C9C8", "#515454"]
+          }]
+        },
+        options:  {
+    title: {
+      display: true,
+      text: "Payment Method"
+    }
+  }
+      });
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+<%-include('../layouts/adminFooter') %>

@@ -1,0 +1,135 @@
+<%-include('../layouts/header') %>
+
+
+      <div class="container-fluid">
+        <div class="row">
+          <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+            <div class="sidebar-sticky">
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#">
+                    My Orders
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/getaddress">
+                    Manage Addresses
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          
+      
+          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+
+           
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                Add new address
+              </button>
+              <hr>
+       
+              <div class="card-body">
+                <div class="row">
+                    <% if (userData.addressDetail && userData.addressDetail.length > 0) { %>
+                        <% for (var i = 0; i < userData.addressDetail.length; i++) { %>
+
+                  <div class="col-sm-3">                 
+                  </div>
+                  <div class="col-sm-12 text-secondary">
+                    <h6><%=userData.username %></h6>  
+                    <%=userData.addressDetail[i].housename %><br>
+                    <%=userData.addressDetail[i].postoffice %>
+                    <%=userData.addressDetail[i].area %><br>
+                    <%=userData.addressDetail[i].district %><br>
+                    <%=userData.addressDetail[i].state %>
+                    <%=userData.addressDetail[i].pin %><br>
+                    <%=userData.addressDetail[i].phonenumber %>
+                    <hr>
+                  </div>
+                  <% } %>
+            
+                  <% } else { %>
+                    <p>No addresses found.</p>
+                  <% } %>
+
+
+                </div>
+       
+              </div>
+            </div>
+          
+          </main>
+        </div>
+      </div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add address</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="/addNewAddress" method="post"  id="form">
+                <div class="mb-1">
+                    <label for="phonenumber" class="col-form-label">Phonenumber</label>
+                    <input required type="text" class="form-control" id="phonenumber" name="phonenumber" />         
+                  </div>
+                  <div class="mb-1">
+                    <label for="housename" class="col-form-label">House name</label>
+                    <input required type="text" class="form-control" id="housename" name="housename" />         
+                  </div>
+                  <div class="mb-1">
+                    <label for="postoffice" class="col-form-label">Post Office</label>
+                    <input required type="text" class="form-control" id="postoffice" name="postoffice" />         
+                  </div>
+                  <div class="mb-1">
+                    <label for="area" class="col-form-label">Area</label>
+                    <input required type="text" class="form-control" id="area" name="area" />         
+                  </div>
+                  <div class="mb-1">
+                    <label for="district" class="col-form-label">District</label>
+                    <input required type="text" class="form-control" id="district" name="district" />         
+                  </div>
+                  <div class="mb-1">
+                    <label for="state" class="col-form-label">State</label>
+                    <input required type="text" class="form-control" id="state" name="state" />         
+                  </div>
+                  <div class="mb-1">
+                    <label for="pin" class="col-form-label">Pincode</label>
+                    <input required type="text" class="form-control" id="pin" name="pin" />         
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Address</button>
+                  </div>
+
+
+            </form>
+          
+        </div>
+       
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <script src="/js/addressValidation.js"></script>
+
+
+
+
+
+
+
+<%-include('../layouts/footer') %>

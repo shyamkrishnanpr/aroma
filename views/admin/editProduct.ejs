@@ -1,0 +1,81 @@
+<%-include('../layouts/adminHeader') %>
+
+    <section class="content">
+        <div class="body_scroll">
+            <div class="block-header">
+                <div class="row">
+                    <div class="col-lg-7 col-md-6 col-sm-12">
+                        <h2>Admin Dashboard</h2>
+                        <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button> -->
+                    </div>
+
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-6 text-center">
+                        <div class="card">
+
+                        </div>
+                    </div>
+                </div>
+                <!-- table order  -->
+                <div class="row clearfix">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>EDIT </strong>PRODUCTS</h2>
+                            </div>
+
+                            <form action="/admin/postEditProduct/<%=productData._id%>" onsubmit="return submit(event)" method="post" id="form" >
+                                <p id="alert" class="text-danger d-flex justify-content-center"></p>
+                                <div class="form-outline flex-fill mb-0 ">
+                                    <label class="form-label" for="form3Example1c">Product name</label>
+                                    <input type="text" value="<%=productData.name%>" name="name" id="product_name"
+                                        class="form-control" data-validate="Enter your name" required />
+                                </div>
+                                <div class="form-outline flex-fill mb-0 ">
+                                    <label class="form-label" for="form3Example1c">Price</label>
+                                    <input type="text" value="<%=productData.price%>" name="price" id="price"
+                                        class="form-control" />
+                                </div>
+                                <div class="form-outline flex-fill mb-0 ">
+                                    <label class="form-label" for="form3Example1c">Description</label>
+                                    <input type="text" value="<%=productData.description%>" name="description"
+                                        id="description" class="form-control" />
+                                </div>
+                                <div class="form-outline flex-fill mb-0 ">
+                                    <label class="form-label" for="form3Example1c">Brand</label>
+                                    <input type="text" value="<%=productData.brand%>" name="brand" id="brand"
+                                        class="form-control" />
+                                </div>
+                                <div class="form-outline flex-fill mb-0 ">
+                                    <label class="form-label" for="form3Example1c">Size</label>
+                                    <input type="text" value="<%=productData.size%>" name="size" id="size"
+                                        class="form-control" />
+                                </div>
+                                <div class="form-outline flex-fill mb-0 ">
+                                    <label class="form-label" for="form3Example1c">stock</label>
+                                    <input type="text" value="<%=productData.stock%>" name="stock" id="stock"
+                                        class="form-control" />
+                                </div>
+                                
+
+
+                                <div class="d-flex justify-content-center mt-5">
+                                    <button type="submit" class="btn btn-success btn-block mb-4">Edit product</button>
+                                  </div>
+
+                            </form>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <%-include('../layouts/adminFooter') %>

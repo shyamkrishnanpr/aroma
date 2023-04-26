@@ -1,0 +1,161 @@
+<%-include('../layouts/header') %>
+
+
+
+<!-- ================ category section start ================= -->		  
+  <section class="section-margin--small mb-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-3 col-lg-4 col-md-5">
+          <div class="sidebar-categories">
+            <div class="head">Browse Categories</div>
+            <ul class="main-categories">
+              <% category.forEach((categories)=>{%>
+
+                
+
+                    <li  class="filter-list"><input  class="pixel-radio" type="" id="" name="name"><label for=""> <a href="/category/<%=categories._id%>">
+                      <%=categories.name %>
+                    </a>
+                     </label></li>
+                 
+
+                <%
+
+              }) %>
+
+             
+            </ul>
+          </div>
+          <div class="sidebar-filter">
+            <div class="top-filter-head">Product Filters</div>
+            
+            <div class="common-filter">
+              <div class="head">Price</div>
+              
+                
+                <ul>
+        
+                  <li class="filter-list">
+                    <input  class="pixel-radio" type="radio" id="" name="name"><label for="">
+                      <a href="?sort=low-to-high">(Low to High)</a>
+                    
+                  </li>
+                  <li class="filter-list">
+                    <input  class="pixel-radio" type="radio" id="" name="name"><label for="">
+                   
+                      <a href="?sort=high-to-low"> (High to Low)</a>
+
+
+                    
+                  </li>
+        
+                </ul>
+
+              
+            </div>
+
+          </div>
+        </div>
+        <div class="col-xl-9 col-lg-8 col-md-7">
+          <!-- Start Filter Bar -->
+          <div class="filter-bar d-flex flex-wrap align-items-center">
+            <div class="sorting">
+              <!-- <select>
+                <option value="04">04</option>
+                <option value="06">06</option>
+                <option value="08">08</option>
+              </select> -->
+              
+            </div>
+            <div class="sorting mr-auto">
+              <!-- <select>
+                <option value="1">Show 12</option>
+                <option value="1">Show 12</option>
+                <option value="1">Show 12</option>
+              </select> -->
+            </div>
+            <div>
+              <form action="/searchProduct" method="post">
+                <div class="input-group filter-bar-search">
+                  <input type="text" id="searchProduct" placeholder="Search" name="searchInput">
+                  <div class="input-group-append">
+                    <button type="submit"><i class="ti-search"></i></button>
+                  </div>
+                </div>
+              </form>
+              
+            </div>
+          </div>
+          <!-- End Filter Bar -->
+          <!-- Start Best Seller -->
+          <section class="lattest-product-area pb-40 category-list">
+            <div class="row">
+                   <% product.forEach((product)=>{%>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card text-center card-product">
+                            <div class="card-product__img">
+                               <a href="/productView/<%=product._id%>" ><img class="card-img" src="/<%=product.image[0].path %>" alt=""></a>
+                              <ul class="card-product__imgOverlay">
+                                <li><a href="/productView/<%=product._id%>"><button><i class="ti-search"></i></button></a></li>                  
+                    <li><button onclick="addToCart('<%= product._id %>')"><i class="ti-shopping-cart"></i></button></li>
+                    <li><button onclick="addToWishlist('<%=product._id%>')"><i class="ti-heart"></i></button></li>
+                              </ul>
+                            </div>
+                            <div class="card-body">
+                              <p>Accessories</p>
+                              <h4 class="card-product__title"><a href="#"><%=product.name  %></a></h4>
+                              <p class="card-product__price"><span>&#8377 </span><%= product.price  %></p>
+                            </div>
+                          </div>                  
+                    </div>
+      
+                    <%
+                   }) %>
+
+            </div>
+
+
+
+            <div class="d-flex justify-content-center">
+              <% if (page > 1) { %>
+                <a class="px-1" href="?page=<%= page - 1 %>">&lt; Previous</a>
+              <% } %>
+
+              <% pageNumbers.forEach(function(pageNumber) { %>
+                <% if (pageNumber === page) { %>
+                  <strong><%= pageNumber %></strong>
+                <% } else { %>
+                  <a class="px-1" href="?page=<%= pageNumber %>"><%= pageNumber %></a>
+                <% } %>
+              <% }); %>
+
+
+              <% if (page < totalPages) { %>
+                <a href="?page=<%= page + 1 %>">Next &gt;</a>
+              <% } %>
+            </div>
+
+          </section>
+          <!-- End Best Seller -->
+        </div>
+      </div>
+    </div>
+  </section>
+	<!-- ================ category section end ================= -->
+
+
+
+
+
+
+
+<%-include('../layouts/footer') %>
+
+
+
+
+
+
+
+

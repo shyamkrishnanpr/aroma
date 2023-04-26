@@ -1,0 +1,163 @@
+<%-include('../layouts/header') %>
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="#"> My Orders </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"> Add address </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="col-lg-8">
+      <form action="/postEditProfile/<%=userData._id %>" method="post" id="form">
+        <div class="card">
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-sm-3">
+                <h7 class="mb-0">Full Name</h7>
+              </div>
+              <div class="col-sm-9 text-primary">
+                <input
+                required
+                  type="text"
+                  class="form-control"
+                  name="username"
+                  id="username"         
+                  value="<%=userData.username%>"
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-sm-3">
+                <h7 class="mb-0">Phone Number</h7>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                <input
+                required
+                  type="text"
+                  name="phonenumber"
+                  id="phonenumber"
+                  class="form-control"
+                  value="<%=userData.phonenumber%>"
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h7 class="mb-0">House Name</h7>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input
+                  required
+                    type="text"
+                    name="housename"
+                    id="housename"
+                    class="form-control"
+                    value="<%=userData?.addressDetail[0]?.housename %>"
+                  />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h7 class="mb-0">Post Office</h7>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input
+                  required
+                    type="text"
+                    name="postoffice"
+                    id="postoffice"
+                    class="form-control"
+                    value="<%=userData?.addressDetail[0]?.postoffice %>"
+                  />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h7 class="mb-0">Area</h7>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input
+                  required
+                    type="text"
+                    name="area"
+                    id="area"
+                    class="form-control"
+                    value="<%=userData?.addressDetail[0]?.area %>"
+                  />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h7 class="mb-0">District</h7>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input
+                  required
+                    type="text"
+                    name="district"
+                    id="district"
+                    class="form-control"
+                    value="<%=userData?.addressDetail[0]?.district %>"
+                  />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h7 class="mb-0">State</h7>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input
+                  required
+                    type="text"
+                    name="state"
+                    id="state"
+                    class="form-control"
+                    value="<%=userData?.addressDetail[0]?.state %>"
+                  />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h7 class="mb-0">Pincode</h7>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  <input
+                  required
+                    type="text"
+                    name="pin"
+                    id="pin"
+                    class="form-control"
+                    value="<%=userData?.addressDetail[0]?.pin %>"
+                  />
+                </div>
+              </div>
+              
+  
+            <div class="row">
+              <div class="col-sm-3"></div>
+              <div class="col-sm-9 text-secondary">
+                <button type="submit" class="btn btn-outline-success  mt-2 px-4">
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"></main>
+  </div>
+</div>
+
+<script src="/js/profileValidation.js"></script>
+
+
+<%-include('../layouts/footer') %>

@@ -1,0 +1,131 @@
+<%-include('../layouts/adminHeader') %>
+
+<section class="content">
+    <div class="body_scroll">
+      <div class="block-header">
+        <div class="row">
+          <div class="col-lg-7 col-md-6 col-sm-12">
+            <h2>Admin Dashboard</h2>
+            <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button> -->
+          </div>
+          
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row clearfix">
+          <div class="col-lg-3 col-md-6 col-sm-6 col-6 text-center">
+            <div class="card">
+              
+            </div>
+          </div>
+        </div>
+
+        <!-- table order  -->
+        <div class="row clearfix">
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="card">
+              <div class="header">
+                <h2><strong>Sub category</strong> management</h2>               
+              </div>
+
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">ADD SUB CATEGORY</button>
+                          
+              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <form action="/admin/addSubCategory" method="post" onsubmit="return submit(event)" id="form" >
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">ADD  SUBCATEGORY</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      
+                        <div class="form-group">
+                          <label for="recipient-name" class="col-form-label">SUB CATEGORY:</label>
+                          <input type="text" class="form-control" id="name" name="name" placeholder="Add sub category">
+
+                        </div>
+                                              
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit"  class="btn btn-primary">Save</button>
+                    </div>
+                  </div>
+                </form>
+                </div>
+              </div> 
+
+              
+
+              <div class="table-responsive">
+                <table class="table table-hover c_table">
+                  <thead>
+                    <tr>
+                      <th style="width: 60px">No</th>
+                      <th> Sub Category</th>
+                      <th>Edit sub Category</th>
+                      <th>Delete/Restore</th>                     
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% let count=1 %>
+                    <% subCategory.forEach((subCategory)=>{%>
+                      <tr>
+                        <td><%= count %></td>
+                        <td><%= subCategory.name %></td>
+                        <td>
+                          <form action="/admin/editSubCategory/<%=subCategory._id%>" onsubmit="return submit(event)" method="post" >
+                            <div class="d-flex">
+                              <input placeholder="New SubCategory" name="name" type="text"  class="form-control w-50" required>
+                              <button type="submit"  class="btn btn-primary">Edit</button>
+                            </div>
+                          </form>
+                        </td>
+                        <td>
+                          <% if(subCategory.delete===false) { %>
+                            <a href="/admin/deleteSubCategory/<%= subCategory._id%>" class="btn btn-danger">Delete</a>
+                            <% }else{ %>
+                              <a href="/admin/restoreSubCategory/<%= subCategory._id%>" class="btn btn-success">Restore</a>
+                              <%}%>
+
+                          
+                        </td>
+                        
+
+
+                      </tr>
+                      <% count++ %>
+                      <%
+                    } )%>
+                    
+
+                  </tbody>
+                </table>
+
+              </div>
+       
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>   
+
+
+
+
+
+
+
+<script>
+  $('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+})
+</script>
+
+
+
+<%-include('../layouts/adminFooter') %>

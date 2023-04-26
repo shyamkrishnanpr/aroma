@@ -1,0 +1,98 @@
+<%-include('../layouts/adminHeader') %>
+
+    <section class="content">
+        <div class="body_scroll">
+            <div class="block-header">
+                <div class="row">
+                    <div class="col-lg-7 col-md-6 col-sm-12">
+                        <h2>Admin Dashboard</h2>
+                        <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button> -->
+                    </div>
+
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row clearfix">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-6 text-center">
+                        <div class="card">
+
+                        </div>
+                    </div>
+                </div>
+                <!-- table order  -->
+                <div class="row clearfix">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>ADD </strong>PRODUCTS</h2>
+                            </div>
+
+
+                            <div class="col py-3"> 
+                                <div class="container ">
+                                    <form action="/admin/postProduct" method="post" onsubmit="return submit(event)" id="form" enctype="multipart/form-data">
+                                        <div class="d-flex justify-content-center">
+                                          
+                                        </div>
+                                
+                                        <p id="alert" class="text-danger d-flex justify-content-center"></p>
+                                        
+                                       
+                                        <div class="form-outline flex-fill mb-0 mt-4">
+                                          <input required type="text"  placeholder="Product name" name="name" id="name"
+                                            class="form-control"  />
+                                        </div>
+                                        <div class="form-outline flex-fill mb-0 mt-4">
+                                          <input required type="number"  placeholder="Price" name="price" id="price" class="form-control" >
+                                        </div>
+                                        <div class="form-outline flex-fill mb-0 mt-4">
+                                          <input required type="text"   placeholder="Description" name="description" id="description" class="form-control" />
+                                        </div>
+                                        <div class="form-outline flex-fill mb-0 mt-4">
+                                          <input required type="text"  placeholder="brandName" name="brand" id="brand"  class="form-control" />
+                                        </div>
+                                        <div class="form-outline flex-fill mb-0 mt-4">
+                                          <input required type="number"   placeholder="Stock" name="stock" id="stock" class="form-control" />
+                                        </div>
+                                        <div class="form-outline flex-fill mb-0 mt-4">
+                                          <input required  class="form-control" type="text" placeholder="Size" id="size" name="size" />
+                                        </div> 
+                                        <div class="form-outline flex-fill mb-0 mt-4">
+                                          <input required class="form-control"   placeholder="images" accept="image/png,image/jpg,image/jpeg" type="file" id="images" name="image" multiple required>
+                                        </div>
+                                             
+                                        <div class="form-outline flex-fill mb-0 mt-4">              
+                                            <select required  class="form-select required" name="category" id="category-select"   aria-label="Default select example">
+                                                <option selected value="">Category</option>
+                                                <% category.forEach((categories)=> {%>
+                                                  <option value="<%=categories._id%>"><%=categories.name%></option>
+                                                  <% }) %>              
+                                                </select>
+                                        </div>
+                                        <div class="form-outline flex-fill mb-0 mt-4">              
+                                          <select required class="form-select required" name="subcategory" id="subCategory-select" placeholder="Select Subcategory"  aria-label="Default select example" >
+                                            <option selected value="">Sub Categories</option>
+                                            <% subCategory.forEach((categories)=> {%>
+                                              <option value="<%=categories._id%>"><%=categories.name%></option>
+                                              <% }) %>      
+                                          </select>
+                                        </div>                                       
+                                        <div class="row p-2 mt-5 mb-2"> 
+                                          <div class="col-md-12 d-flex justify-content-center">
+                                            <button type="submit" class="btn btn-success sub-btn btn-lg">Add Product</button>
+                                          </div>
+                                        </div>
+                                      </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+    <script src="/js/addProductValidation.js"></script>
+
+
+    <%-include('../layouts/adminFooter') %>

@@ -1,0 +1,203 @@
+<%-include('../layouts/header') %>
+<section>
+<div class="container-fluid">
+
+    <div class="row">
+      <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+        <div class="sidebar-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">
+                My Orders
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/getaddress">
+                Manage Addresses
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+  
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <section class="order_details section_gap">
+          <div class="container">
+            <div class="col-12">
+              <div class="card" style="border-radius: 10px" style="background: white">
+               
+                <div class="card-body p-4" style="background:white; border-radius: 10px">
+                  <div class="d-flex justify-content-between align-items-center mb-4">
+                    <p class="lead fw-normal mb-0" style="color:black">
+                      Running orders
+                    </p>
+                  </div>
+                  <% productData.forEach((product)=>{ %>
+                  <div class="card shadow-0 border mb-4">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-2">
+                          <img src="/<%= product.productDetail.image[0].path %>" class="img-fluid" alt="Product image" />
+                          
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="mb-0"><%=product.productDetail.name%></p>
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="mb-0">
+                            <%= product.categoryName.name %>
+                          </p>
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0">
+                            Payment: <%= product.paymentMethod %>
+                          </p>
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center"  >
+                          <a href="/orderedProduct/<%= product._id %>" style="text-decoration: #a8729a;">Details
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          
+                           
+                             
+                              <a data-toggle="modal" class="btn btn-outline-danger" data-target="#exampleModal-<%=product._id%>">
+                        Cancel
+                      </a>
+                            
+                         
+
+
+
+                          <!-- Modal -->
+                         
+                          
+                          <div class="modal fade modal-centered" id="exampleModal-<%=product._id%>" tabindex="-1" aria-labelledby="exampleModalLabel">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title fs-5" id="exampleModalLabel">
+                              Confirmation
+                            </h5>
+                          </div>
+                          <form action="/cancelOrder/<%=product._id%>" method="post">
+                            <div class="modal-body">
+                              Are you sure you want to cancel this order ?
+                              
+                              
+                            
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                No
+                              </button>
+                              <button type="submit" class="btn btn-danger">
+                                Yes
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    
+
+
+                        </div>
+                      </div>
+                      <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1" />
+                      <div class="row d-flex align-items-center">
+                        <div class="col-md-4">
+                          <p class="text-muted mb-0">
+                            Total Amount: ₹ <%= product.productDetail.price%> 
+                          </p>
+                        </div>
+                        <div class="col-md-8">
+                     
+                          <div class="d-flex justify-content-right">
+                            <p class="text-muted mt-1 mb-0 small ms-xl-5">
+                            Payment status : <%=product.paymentStatus%>
+                            </p>
+                            <p class="text-muted mt-1 ml-4 mb-0 small ms-xl-5">
+                              Order Date : <%=product.orderDate%>
+                            </p>
+                          
+                            
+                          </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <% }) %>
+                </div>
+                </div>
+                </div>
+                </div>
+                </section>
+        </main>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <section class="order_details section_gap">
+          <div class="container">
+            <div class="col-12">
+              <div class="card" style="border-radius: 10px" style="background: white">
+               
+                <div class="card-body p-4" style="background:white; border-radius: 10px">
+                  <div class="d-flex justify-content-between align-items-center mb-4">
+                    <p class="lead fw-normal mb-0" style="color:black">
+                      Previous Orders
+                    </p>
+                  </div>
+                  <% previousData.forEach((product)=>{ %>
+                  <div class="card shadow-0 border mb-4">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-2">
+                          <img src="/<%= product.productDetail.image[0].path %>" class="img-fluid" alt="Product image" />
+                          
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="mb-0"><%=product.productDetail.name%></p>
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="mb-0">
+                            <%= product.categoryName.name %>
+                          </p>
+                        </div>
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                          <p class="text-muted mb-0">
+                            Payment: <%= product.paymentMethod %>
+                          </p>
+                        </div>
+                        
+                        <div class="col-md-2 text-center d-flex justify-content-center align-items-center"  >
+                          <a href="/orderedProduct/<%= product._id %>" style="text-decoration: #a8729a;">Details
+                        </div>
+                        
+                      </div>
+                      
+                      
+                    </div>
+                  </div>
+                  <% }) %>
+                </div>
+                </div>
+                </div>
+                </div>
+                </section>
+
+        </main>
+
+
+</div>
+        </div>
+    </div>
+  
+
+
+
+  </section>
+
+
+
+<%-include('../layouts/footer') %>

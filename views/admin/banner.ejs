@@ -1,0 +1,182 @@
+<%-include('../layouts/adminHeader') %>
+<section class="content">
+  <div class="body_scroll">
+    <div class="block-header">
+      <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+          <h2>Admin Dashboard</h2>
+          <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button> -->
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-lg-3 col-md-6 col-sm-6 col-6 text-center">
+          <div class="card"></div>
+        </div>
+      </div>
+      <!-- table order  -->
+      <div class="row clearfix">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <div class="card">
+            <div class="header">
+              <h2><strong>ADD </strong>BANNER</h2>
+            </div>
+            <form
+              action="/admin/addBanner"
+              method="post"
+              id="couponForm"
+              onsubmit="return submit(event)"
+              enctype="multipart/form-data"
+            >
+              <div class="form-group row">
+                <label
+                  for="colFormLabelSm"
+                  class="col-sm-2 col-form-label col-form-label-sm"
+                  >Offer Type</label
+                >
+                <div class="col-sm-10">
+                  <input
+                  required
+                    type="text"
+                    class="form-control form-control-sm"
+                    id="offerType"
+                    name="offerType"
+                    placeholder="Offer Type.."
+                  />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label
+                  for="colFormLabelSm"
+                  class="col-sm-2 col-form-label col-form-label-sm"
+                  >Banner Text</label
+                >
+                <div class="col-sm-10">
+                  <input
+                  required
+                    type="text"
+                    class="form-control form-control-sm"
+                    name="bannerText"
+                    id="bannerText"
+                    placeholder="Banner Text"
+                  />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label
+                  for="colFormLabelSm"
+                  class="col-sm-2 col-form-label col-form-label-sm"
+                  >Coupon Name</label
+                >
+                <div class="col-sm-10">
+                  <input
+                  required
+                    type="text"
+                    class="form-control form-control-sm"
+                    name="couponName"
+                    id="couponName"
+                    placeholder="Coupon Name"
+                  />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label
+                  for="colFormLabelSm"
+                  class="col-sm-2 col-form-label col-form-label-sm"
+                  >Banner Images</label
+                >
+
+                <div class="col-sm-10">
+                  <input
+                    class="form-control form-control-sm"
+                    required
+                    id="fileInput"
+                    accept="image/png, image/jpeg, image/jpg"
+                    type="file"
+                    name="bannerImage"
+                    id="bannerImage"
+                    multiple
+                  />
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-outline-success">
+                Add Banner
+              </button>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-hover c_table">
+                  <tr>
+                    <th>Offer Type</th>
+                    <th>Banner Text</th>
+                    <th>Coupon Name</th>
+                    <th>Banner Image</th>
+                    <th>Order</th>
+                    <th>Blocked</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% bannerData.forEach(function(banner) { %>
+                  <tr>
+                    <td ><%= banner.offerType %></td>
+                    <td><%= banner.bannerText %></td>
+                    <td><%= banner.couponName %></td>
+                    <td>
+                      <img src="/<%= banner.bannerImage %>" height="px" /></td>
+                      <td>
+                        <form action="/admin/updateOrder" method="post" onsubmit="return submit(event)">
+                          <input type="hidden" name="bannerId" value="<%= banner._id %>" />
+                          <input type="number" name="order" value="<%= banner.order %>" min="1" style="font-size: 15px; width: 60px;" />
+                          <button type="submit">Update</button>
+                        </form>
+                      </td>
+                      
+                    
+                      <td>
+                        <% if(banner.blocked===false) { %>
+                            <a href="/admin/blockBanner/<%= banner._id%>" class="btn btn-danger">BLOCK</a>
+                            <% }else{ %>
+                              <a href="/admin/unblockBanner/<%= banner._id%>" class="btn btn-success">UNBLOCK</a>
+                              <%}%>
+                      </td>
+                    
+                    <td>
+                      <form action="/admin/banner/delete/<%= banner._id %>" method="POST">
+                        <button type="submit">Delete</button>
+                      </form>
+                    </td>
+                  </tr>
+                  <% }); %>
+                  
+                </table>
+            
+              </div>
+
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function submit(event) {
+  event.preventDefault();
+  const form = event.target;
+  const formData = new FormData(form);
+  console.log(Object.fromEntries(formData.entries())); // Log form data
+  form.submit(); // Submit the form
+}
+
+</script>
+
+
+<script src="/js/bannerValidation.js"></script>
+
+<%-include('../layouts/adminFooter') %>

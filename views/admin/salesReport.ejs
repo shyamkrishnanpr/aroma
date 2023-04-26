@@ -1,0 +1,108 @@
+<%-include('../layouts/adminHeader') %>
+<section class="content">
+  <div class="body_scroll">
+    <div class="block-header">
+      <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+          <h2>Admin Dashboard</h2>
+          <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button> -->
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-lg-3 col-md-6 col-sm-6 col-6 text-center">
+          <div class="card"></div>
+        </div>
+      </div>
+      <!-- table order  -->
+      <div class="row clearfix">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <div class="card">
+            <div class="header">
+              <h2><strong>SALES </strong>REPORT</h2>
+            </div>
+
+
+            <div class="row clearfix">
+
+              <div class="col-md-10">
+                <form action="/admin/salesReport" method="get" onsubmit="return submit(event)">
+                  <label for="start-date">Start Date:</label>
+                  <input required type="date" id="start-date" name="startDate">
+                
+                  <label for="end-date">End Date:</label>
+                  <input required type="date" id="end-date" name="endDate">
+                
+                  <button type="submit">Search</button>
+                </form>
+                
+              </div>
+              
+              <button class="btn btn-success btn-lg" id="download-pdf">Download</button>
+              
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div  class="table-responsive">
+                        <table id="tableData" class="table table-hover c_table">
+                          <thead>
+                            <tr>
+                              <th scope="col">Customer name</th>
+                              <th scope="col">Order date</th>                         
+                              <th scope="col">Payment status</th>
+                              <th scope="col">Order status</th>
+                              <th scope="col">Delivery date</th>
+                              <th scope="col">Amount</th>             
+                            </tr>
+                          </thead>
+                          <% salesReport.forEach((order)=>{%>
+                            <tr class="clickable-row" data-href="/admin/orderedProduct/<%=order._id%>">                         
+                                <td><%=order.username  %></td>
+                                <td><%=order.orderDate  %></td>
+                                <td><%=order.paymentStatus  %></td>
+                                <td><%=order.orderStatus  %></td>
+                                <td><%=order.deliveryDate  %></td>
+                                <td><span>&#8377 </span><%=order.totalAmount  %></td>         
+            </div>
+          </div>
+        </div>                              
+                                </td>
+        
+                            </tr>
+        
+                            <%  
+        
+                          }) %>
+                            
+                       
+                        </table>
+        
+                      </div>
+
+    
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+<script>
+document.getElementById("download-pdf").addEventListener("click", () => {
+  const element = document.getElementById("tableData"); 
+  html2pdf().from(element).save();
+});
+
+</script>
+
+
+
+<script src="/js/dateValidation.js"></script>
+
+
+
+
+
+
+<%-include('../layouts/adminFooter') %>

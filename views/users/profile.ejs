@@ -1,0 +1,76 @@
+<%-include('../layouts/header') %>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="/getOrders"> My Orders </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/getaddress"> Manage Addresses </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <div class="card my-4">
+        <div class="card-body">
+          <h4 class="card-title">Hello, <%= userData.username %></h4>
+          <p class="card-text">
+            "Time is precious, make it count with our exquisite collection of
+            watches. Welcome to our online store!"
+          </p>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-3">
+              <h6 class="mb-0">Full Name</h6>
+            </div>
+            <div class="col-sm-9 text-secondary"><%=userData.username%></div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-3">
+              <h6 class="mb-0">Email</h6>
+            </div>
+            <div class="col-sm-9 text-secondary"><%=userData.email%></div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-3">
+              <h6 class="mb-0">Phone</h6>
+            </div>
+            <div class="col-sm-9 text-secondary"><%=userData.phonenumber%></div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-sm-3">
+              <h6 class="mb-0">Wallet</h6>
+            </div>
+            <div class="col-sm-9 text-secondary">Your wallet have :<span class="text-danger">₹ <%=userData.walletTotal  %></span> </div>
+          </div>
+          <hr />
+          <hr />
+          <div class="row">
+            <div class="col-sm-12">
+              <a class="btn btn-primary" href="/editProfile"
+                >Update your Profile</a
+              >
+              <a class="btn btn-primary" href="/editPassword"
+                >Change Password</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<%-include('../layouts/footer') %>

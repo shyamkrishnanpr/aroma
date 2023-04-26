@@ -1,0 +1,153 @@
+<%-include('../layouts/adminHeader') %>
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.js"></script>
+
+
+
+
+
+
+<section class="content">
+  <div class="body_scroll">
+    <div class="block-header">
+      <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+          <h2>Admin Dashboard</h2>
+          <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button> -->
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-lg-3 col-md-6 col-sm-6 col-6 text-center">
+          <div class="card"></div>
+        </div>
+      </div>
+      <!-- table order  -->
+      <div class="row clearfix">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <div class="card">
+            <div class="header">
+              <h2><strong>Order</strong> management</h2>
+            </div>
+
+            <div class="table-responsive">
+                <table id="myTable" class="table table-hover c_table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Customer name</th>
+                      <th scope="col">Order date</th>
+                      <th scope="col">Payment method</th>
+                      <th scope="col">Payment status</th>
+                      <th scope="col">Order status</th>
+                      <th scope="col">Delivery date</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Action</th>
+                       
+                    </tr>
+                  </thead>
+                  <% orderDetails.forEach((order)=>{%>
+                    <tr class="clickable-row" data-href="/admin/orderedProduct/<%=order._id%>">
+                     
+                        <td><%=order.username  %></td>
+                        <td><%=order.orderDate  %></td>
+                        <td><%=order.paymentMethod  %></td>
+                        <td><%=order.paymentStatus  %></td>
+                        <td><%=order.orderStatus  %></td>
+                        <td><%=order.deliveryDate  %></td>
+                        <td><span>&#8377 </span><%=order.totalAmount  %></td>
+                        <td>
+                        
+                        <a href="/admin/orderedProduct/<%=order._id%> " class="btn btn-secondary ">View</a> 
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-<%=order._id %>">
+  EDIT
+</button>
+</td>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal-<%=order._id  %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Manage Orders</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/admin/changeStatus/<%=order._id%>" method="post" onsubmit="return submit(event)">
+          
+          <div class="form-group">
+            <label for="">Payment Status</label>
+            <select class="form-control" name="paymentStatus" id="">
+              <option><%=order.paymentStatus  %></option>
+              <option>Pending</option>
+              <option>Complete</option>
+              <option>paid</option>
+ 
+            </select>
+          </div>
+           
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Order Status</label>
+            <select class="form-control" name="orderStatus" id="" >
+              <option><%=order.orderStatus  %></option>
+              <option>Placed</option>
+              <option>Pending</option>
+              <option>Shipped</option>
+              <option>Out for deliver</option>
+              <option>Delivered</option>
+              <option>Cancelled</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save </button>
+        </div>
+      </div>
+    </div>
+  </div>      
+        </form>
+    </div>
+  </div>
+</div>
+                        
+                        
+
+                    </tr>
+
+                    <%  
+
+                  }) %>
+                    
+               
+                </table>
+
+              </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+$(document).on('click', '.clickable-row', function() {
+  window.location.href = $(this).data('href');
+});
+
+</script>
+<script>
+  $(document).ready(function() {
+    $('#myTable').DataTable();
+});
+</script>
+
+
+<%-include('../layouts/adminFooter') %>

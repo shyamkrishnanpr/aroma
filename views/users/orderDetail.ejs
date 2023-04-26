@@ -1,0 +1,95 @@
+<%-include('../layouts/header') %>
+
+<div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+        <div class="sidebar-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">
+                My Orders
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/getaddress">
+                Manage Addresses
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+
+      <div class="row clearfix col-md-10">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+   
+            
+            
+             
+                  <h5>Delivery Address</h5>
+               <%=orderDetails[0].username  %><br>
+               <%=orderDetails[0].housename   %><br>
+               <%=orderDetails[0].postoffice  %>,
+               <%=orderDetails[0].area  %><br>
+               <%=orderDetails[0].district %><br>
+               <%=orderDetails[0].state %><br>
+               <%=orderDetails[0].pin %><br>
+               <%=orderDetails[0].phonenumber  %><br>
+                  
+    
+              </div>
+            
+
+
+
+            <div class="table-responsive col-md-12" >
+              <table class="table table-hover c_table">
+                <thead>
+                  <h5>Product Detail</h5>
+                  <tr>
+                      <th scope="col">Image</th>
+                      <th scope="col">Product name</th>
+                      <th scope="col">Category</th>
+                      <th scope="col">quantity</th>
+                      <th scope="col">Price</th>
+                  </tr>
+                </thead>
+              
+                  <tr>
+                      <% productData.forEach((order)=>{
+                          %>
+                          <td><img style="width: 50px;" src="/<%=order.productDetail.image[0].path %>" alt=""></td>
+
+                          <td><%=order.productDetail.name%></td>
+                        
+                          <td><%=order.categoryName.name%></td>
+                          <td><%=order.productQuantity%></td>
+                          <td><%=order.productDetail.price%></td>
+                       
+                         </tr>
+                          <%
+                      }) %>
+     
+              </table>
+
+            </div>
+
+            <div class="card">
+<div class="card-body">
+  <h5 > The total sum of order is <span style="color: red;">&#8377 <%=orderDetails[0].totalAmount  %> </span></h5>
+
+</div>
+</div>
+
+
+        
+      </div>
+    </div>
+
+
+
+      
+
+    </div>
+</div>
+<%-include('../layouts/footer') %>
