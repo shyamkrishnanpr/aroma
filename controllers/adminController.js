@@ -87,8 +87,10 @@ const verifyLogin = async (req, res, next) => {
 
 const email = req.body.email
     const password=req.body.password;
-    const passwordDB=process.env.ADMIN_PASSWORD
-    const usernameDB=process.env.ADMIN_EMAIL
+    const passwordDB ="11223344"
+    const usernameDB ="admin@gmail.com"
+    // const passwordDB=process.env.ADMIN_PASSWORD
+    // const usernameDB=process.env.ADMIN_EMAIL
     if(password===passwordDB && email===usernameDB){
         req.session.admin=req.body.email
         res.redirect('/admin/home')
