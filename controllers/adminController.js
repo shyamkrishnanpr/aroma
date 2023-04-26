@@ -86,25 +86,18 @@ const verifyLogin = async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    const userData = await User.findOne({ email: email });
-    if (userData) {
-      const passwordMatch = await bcrypt.compare(password, userData.password);
-      if (passwordMatch) {
-        if (userData.is_admin === 0) {
-          req.session.loginerr = "Email and password is incorrect";
+
+    if(email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD){
+      req.session.admin = email;
+      res.redirect("admin/home");
+
+    }else{
+      
           res.redirect("/admin/login");
-        } else {
-          req.session.admin = userData._id;
-          res.redirect("admin/home");
-        }
-      } else {
-        req.session.loginerr = "Email and password is incorrect";
-        res.redirect("/admin/login");
-      }
-    } else {
-      req.session.loginerr = "Email and password is incorrect";
-      res.redirect("/admin/login");
+
     }
+
+
   } catch (error) {
     console.log(error.message);
   }
