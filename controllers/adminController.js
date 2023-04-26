@@ -4,7 +4,7 @@ const order = require("../model/orderSchema");
 const product = require("../model/productSchema");
 const moment = require("moment");
 
-
+require('dotenv').config()
 
 
 // admin dashboard
