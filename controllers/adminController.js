@@ -72,8 +72,8 @@ const loadDashboard = async (req, res, next) => {
 
 const loadLogin = async (req, res, next) => {
   try {
-    message = req.session.loginerr;
-    res.render("admin/login", { message });
+    
+    res.render("admin/login");
   } catch (error) {
     console.log(error.message);
   }
@@ -85,12 +85,11 @@ const verifyLogin = async (req, res, next) => {
   try {
     
 
-const email = req.body.email
+    const email = req.body.email
     const password=req.body.password;
-    const passwordDB ="11223344"
-    const usernameDB ="admin@gmail.com"
-    // const passwordDB=process.env.ADMIN_PASSWORD
-    // const usernameDB=process.env.ADMIN_EMAIL
+    
+    const passwordDB=process.env.ADMIN_PASSWORD
+    const usernameDB=process.env.ADMIN_EMAIL
     if(password===passwordDB && email===usernameDB){
         req.session.admin=req.body.email
         res.redirect('/admin/home')
