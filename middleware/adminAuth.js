@@ -19,7 +19,10 @@ const isLogout = async(req,res,next)=>{
         if(req.session.admin){
             res.redirect('/admin/home');
         }
-        next();
+        else{
+            next();
+        }
+        
         
     } catch (error) {
         console.log(error.message)
