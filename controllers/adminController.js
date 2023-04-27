@@ -11,7 +11,7 @@ require('dotenv').config()
 const loadLogin = async (req, res, next) => {
   try {
     
-    res.render("admin/login");
+    res.render("./admin/login");
   } catch (error) {
     console.log(error.message);
   }
@@ -33,7 +33,7 @@ const verifyLogin = async (req, res, next) => {
         res.redirect('/admin/home')
     }else{
         req.session.loginErr='User Name or Password is incorrect'
-        res.redirect('/admin')
+        res.redirect('/admin/')
     }
 
 
