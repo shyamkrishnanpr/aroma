@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-lg-7 col-md-6 col-sm-12">
           <h2>Admin Dashboard</h2>
-          <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button> -->
+          
         </div>
       </div>
     </div>
@@ -24,26 +24,38 @@
             </div>
 
 
+
+
             <div class="row clearfix">
 
               <div class="col-md-10">
-                <form action="/admin/salesReport" method="get" onsubmit="return submit(event)">
+                <form id="sales-form" action="/admin/salesReport" method="get" onsubmit="return submit(event)">
                   <label for="start-date">Start Date:</label>
-                  <input required type="date" id="start-date" name="startDate">
-                
-                  <label for="end-date">End Date:</label>
-                  <input required type="date" id="end-date" name="endDate">
-                
-                  <button type="submit">Search</button>
+<input required type="date" id="start-date" name="startDate" value="<%= startDate ? startDate.toISOString().substr(0, 10) : '' %>">
+
+<label for="end-date">End Date:</label>
+<input required type="date" id="end-date" name="endDate" value="<%= endDate ? endDate.toISOString().substr(0, 10) : '' %>">
+
+                  <button class="btn btn-info"  type="submit">Search</button>
+                  
+                  <a class="btn btn-danger" href="/admin/salesReport">Clear</a>
+
                 </form>
+
                 
               </div>
-              
-              <button class="btn btn-success btn-lg" id="download-pdf">Download</button>
+              <button class="btn btn-success " id="download-pdf">Download</button>
+             
               
                 <div class="col-sm-12 col-md-12 col-lg-12">
-                    <div  class="table-responsive">
-                        <table id="tableData" class="table table-hover c_table">
+                    <div id="tableData" class="table-responsive mt-3">
+                      <% if (startDate && endDate) { %>
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                          <h6>Showing sales report from <%= startDate.toISOString().substring(0, 10) %> to <%= endDate.toISOString().substring(0, 10) %></h6>
+                        </div>
+                      <% } %>
+
+                        <table id="" class="table table-hover c_table">                    
                           <thead>
                             <tr>
                               <th scope="col">Customer name</th>
@@ -62,11 +74,10 @@
                                 <td><%=order.orderStatus  %></td>
                                 <td><%=order.deliveryDate  %></td>
                                 <td><span>&#8377 </span><%=order.totalAmount  %></td>         
-            </div>
-          </div>
-        </div>                              
-                                </td>
-        
+                       </div>
+                    </div>
+                  </div>                              
+                                </td>   
                             </tr>
         
                             <%  
@@ -76,9 +87,7 @@
                        
                         </table>
         
-                      </div>
-
-    
+                      </div>   
           </div>
         </div>
       </div>
@@ -95,6 +104,8 @@ document.getElementById("download-pdf").addEventListener("click", () => {
 });
 
 </script>
+
+
 
 
 

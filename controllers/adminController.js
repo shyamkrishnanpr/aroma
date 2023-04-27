@@ -178,7 +178,7 @@ const salesReport = async (req, res, next) => {
 
     //   console.log("The sales report is ",salesReport)
 
-    res.render("admin/salesReport", { salesReport });
+    res.render("admin/salesReport", { salesReport,startDate,endDate });
   } catch (error) {
     console.log(error);
   }
