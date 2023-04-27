@@ -6,6 +6,44 @@ const moment = require("moment");
 
 require('dotenv').config()
 
+//admin login page
+
+const loadLogin = async (req, res, next) => {
+  try {
+    
+    res.render("admin/login");
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// admin login verifying
+
+const verifyLogin = async (req, res, next) => {
+  try {
+    
+
+    const email = req.body.email
+    const password=req.body.password;
+    
+    const passwordDB=process.env.ADMIN_PASSWORD
+    const usernameDB=process.env.ADMIN_EMAIL
+    if(password===passwordDB && email===usernameDB){
+        req.session.admin=req.body.email
+        res.redirect('/admin/home')
+    }else{
+        req.session.loginErr='User Name or Password is incorrect'
+        res.redirect('/admin')
+    }
+
+
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+
+
 
 // admin dashboard
 
@@ -68,44 +106,9 @@ const loadDashboard = async (req, res, next) => {
   }
 };
 
-//admin login page
-
-const loadLogin = async (req, res, next) => {
-  try {
-    
-    res.render("admin/login");
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
-// admin login verifying
-
-const verifyLogin = async (req, res, next) => {
-  try {
-    
-
-    const email = req.body.email
-    const password=req.body.password;
-    
-    const passwordDB=process.env.ADMIN_PASSWORD
-    const usernameDB=process.env.ADMIN_EMAIL
-    if(password===passwordDB && email===usernameDB){
-        req.session.admin=req.body.email
-        res.redirect('/admin/home')
-    }else{
-        req.session.loginErr='User Name or Password is incorrect'
-        res.redirect('/admin')
-    }
 
 
 
-
-
-  } catch (error) {
-    console.log(error.message);
-  }
-};
 
 //  admin logout
 const logout = async (req, res, next) => {
