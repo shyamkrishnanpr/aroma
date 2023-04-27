@@ -161,10 +161,13 @@ const salesReport = async (req, res, next) => {
 
     const salesReport = await order.find(query);
 
-    //   console.log("The sales report is ",salesReport)
-    console.log(startDate)
+    res.render("admin/salesReport", {
+      salesReport,
+      startDate: startDate ? startDate : "",
+      endDate: endDate ? endDate : "",
+    });
 
-    res.render("admin/salesReport", { salesReport, startDate, endDate });
+    
   } catch (error) {
     console.log(error);
   }

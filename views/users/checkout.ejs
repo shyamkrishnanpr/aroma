@@ -11,26 +11,29 @@
           <label for="country">Select Shipping Address</label>
           <div class="default-select">
             <select
-              required
-              aria-placeholder="select your address"
-              class="form-control form-select mt-2"
-              style="color: #000"
-              onchange="updateAddressDetail(this.value)"
-            >
-              <% if (userData.addressDetail && userData.addressDetail.length> 0)
-              { %> <% for (let i=0; i < userData.addressDetail.length; i++) { %>
-              <option value="<%=userData.addressDetail[i]._id%>">               
-                <%=userData.addressDetail[i].housename%>,
-                <%=userData.addressDetail[i].postoffice%>,
-                <%=userData.addressDetail[i].area%>,
-                <%=userData.addressDetail[i].district%>,
-                <%=userData.addressDetail[i].state%>,
-                <%=userData.addressDetail[i].pin%>,
-              </option>
-              <% } %> <% } else { %>
-              <p>No address selected</p>
-              <% } %>
-            </select>
+      required
+      aria-placeholder="select your address"
+      class="form-control form-select mt-2"
+      style="color: #000"
+      onchange="updateAddressDetail(this.value)"
+      id="addressSelect"
+    >
+      <% if (userData.addressDetail && userData.addressDetail.length> 0){
+         %> <% for (let i=0; i < userData.addressDetail.length; i++) { %>
+        <option value="<%=userData.addressDetail[i]._id%>"
+          <% if (i == 0) { %> selected <% } %>
+        >               
+          <%=userData.addressDetail[i].housename%>,
+          <%=userData.addressDetail[i].postoffice%>,
+          <%=userData.addressDetail[i].area%>,
+          <%=userData.addressDetail[i].district%>,
+          <%=userData.addressDetail[i].state%>,
+          <%=userData.addressDetail[i].pin%>,
+        </option>
+      <% } %> <% } else { %>
+        <p>No address selected</p>
+      <% } %>
+    </select>
           </div>
           <hr>
           <form
