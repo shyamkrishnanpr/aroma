@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-lg-7 col-md-6 col-sm-12">
           <h2>Admin Dashboard</h2>
-          
+          <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button> -->
         </div>
       </div>
     </div>
@@ -31,18 +31,16 @@
               <div class="col-md-10">
                 <form id="sales-form" action="/admin/salesReport" method="get" onsubmit="return submit(event)">
                   <label for="start-date">Start Date:</label>
-                  <input required type="date" id="start-date" name="startDate" value="<%= startDate ? (new Date(startDate)).toISOString().substr(0, 10) : new Date().toISOString().substr(0, 10) %>"
-                  >
-                
-                  <label for="end-date">End Date:</label>
-                  <input required type="date" id="end-date" name="endDate" value="<%= endDate ? (new Date(endDate)).toISOString().substr(0, 10) : new Date().toISOString().substr(0, 10) %>">
+<input required type="date" id="start-date" name="startDate" value="<%= startDate ? startDate.toISOString().substr(0, 10) : '' %>">
 
-                
-                  <button class="btn btn-info" type="submit">Search</button>
-                                  
+<label for="end-date">End Date:</label>
+<input required type="date" id="end-date" name="endDate" value="<%= endDate ? endDate.toISOString().substr(0, 10) : '' %>">
+
+                  <button class="btn btn-info"  type="submit">Search</button>
+                  
                   <a class="btn btn-danger" href="/admin/salesReport">Clear</a>
+
                 </form>
-                
 
                 
               </div>
@@ -51,7 +49,11 @@
               
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <div id="tableData" class="table-responsive mt-3">
-                   
+                      <% if (startDate && endDate) { %>
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                          <h6>Showing sales report from <%= startDate.toISOString().substring(0, 10) %> to <%= endDate.toISOString().substring(0, 10) %></h6>
+                        </div>
+                      <% } %>
 
                         <table id="" class="table table-hover c_table">                    
                           <thead>
@@ -103,7 +105,17 @@ document.getElementById("download-pdf").addEventListener("click", () => {
 
 </script>
 
+<!-- <script>
+  document.getElementById('clear-btn').addEventListener('click', function() {
+  document.getElementById('sales-form').reset();
+  var table = document.getElementById('tableData');
+  var rows = table.getElementsByTagName('tr');
+  while (rows.length > 1) {
+    table.deleteRow(1);
+  }
+});
 
+</script> -->
 
 
 
