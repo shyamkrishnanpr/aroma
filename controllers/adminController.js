@@ -4,13 +4,12 @@ const order = require("../model/orderSchema");
 const product = require("../model/productSchema");
 const moment = require("moment");
 
-require('dotenv').config()
+require("dotenv").config();
 
 //admin login page
 
 const loadLogin = async (req, res, next) => {
   try {
-    
     res.render("./admin/login");
   } catch (error) {
     console.log(error.message);
@@ -21,29 +20,22 @@ const loadLogin = async (req, res, next) => {
 
 const verifyLogin = async (req, res, next) => {
   try {
-    
+    const email = req.body.email;
+    const password = req.body.password;
 
-    const email = req.body.email
-    const password=req.body.password;
-    
-    const passwordDB=process.env.ADMIN_PASSWORD
-    const usernameDB=process.env.ADMIN_EMAIL
-    if(password===passwordDB && email===usernameDB){
-        req.session.admin=req.body.email
-        res.redirect('/admin/home')
-    }else{
-        req.session.loginErr='User Name or Password is incorrect'
-        res.redirect('/admin/')
+    const passwordDB = process.env.ADMIN_PASSWORD;
+    const usernameDB = process.env.ADMIN_EMAIL;
+    if (password === passwordDB && email === usernameDB) {
+      req.session.admin = req.body.email;
+      res.redirect("/admin/home");
+    } else {
+      req.session.loginErr = "User Name or Password is incorrect";
+      res.redirect("/admin/");
     }
-
-
   } catch (error) {
     console.log(error.message);
   }
 };
-
-
-
 
 // admin dashboard
 
@@ -74,7 +66,7 @@ const loadDashboard = async (req, res, next) => {
       return accumulator + object.totalAmount;
     }, 0);
 
-    const allOrders = orderData.length; 
+    const allOrders = orderData.length;
     const pending = await order.find({ orderStatus: "Pending" }).count();
     const placed = await order.find({ orderStatus: "Placed" }).count();
     const cancelled = await order.find({ orderStatus: "Cancelled" }).count();
@@ -82,9 +74,8 @@ const loadDashboard = async (req, res, next) => {
     const delivered = await order.find({ orderStatus: "Delivered" }).count();
     const cod = await order.find({ paymentMethod: "COD" }).count();
     const online = await order.find({ paymentMethod: "Online" }).count();
-    const activeUsers = await User.find({isBlocked:false}).count();
-    const productsCount = await product.find({delete:false}).count();
-
+    const activeUsers = await User.find({ isBlocked: false }).count();
+    const productsCount = await product.find({ delete: false }).count();
 
     res.render("admin/home", {
       totalRevenue,
@@ -99,16 +90,12 @@ const loadDashboard = async (req, res, next) => {
       cod,
       online,
       activeUsers,
-      productsCount
+      productsCount,
     });
   } catch (error) {
     console.log(error.message);
   }
 };
-
-
-
-
 
 //  admin logout
 const logout = async (req, res, next) => {
@@ -151,9 +138,7 @@ const unblockUser = async (req, res) => {
 
 const salesReport = async (req, res, next) => {
   try {
-    const startDate = req.query.startDate
-      ? new Date(req.query.startDate)
-      : null;
+    const startDate = req.query.startDate ? new Date(req.query.startDate) : null;
     const endDate = req.query.endDate ? new Date(req.query.endDate) : null;
 
     const query = {
@@ -177,8 +162,9 @@ const salesReport = async (req, res, next) => {
     const salesReport = await order.find(query);
 
     //   console.log("The sales report is ",salesReport)
+    console.log(startDate)
 
-    res.render("admin/salesReport", { salesReport,startDate,endDate });
+    res.render("admin/salesReport", { salesReport, startDate, endDate });
   } catch (error) {
     console.log(error);
   }
