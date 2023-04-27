@@ -28,9 +28,9 @@ const  upload  = require('../middleware/multer');
 
 
 
-routes.get('/',adminController.loadLogin);
+routes.get('/',auth.isLogout,adminController.loadLogin);
 
-routes.post('/',adminController.verifyLogin);
+routes.post('/postLogin',adminController.verifyLogin);
 
 routes.get('/home',auth.isLogin,adminController.loadDashboard);
 
