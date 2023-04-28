@@ -138,8 +138,8 @@ const unblockUser = async (req, res) => {
 
 const salesReport = async (req, res, next) => {
   try {
-    const startDate = req.query.startDate ? new Date(req.query.startDate) : new Date('2023-01-01');
-    const endDate = req.query.endDate ? new Date(req.query.endDate) : new Date();
+    const startDate = req.query.startDate ? new Date(req.query.startDate) : null;
+    const endDate = req.query.endDate ? new Date(req.query.endDate) : null;
 
     const query = {
       paymentStatus: "paid",
@@ -161,8 +161,7 @@ const salesReport = async (req, res, next) => {
 
     const salesReport = await order.find(query);
 
-    //   console.log("The sales report is ",salesReport)
-    // console.log(startDate)
+   
 
     res.render("admin/salesReport", { salesReport, startDate, endDate });
   } catch (error) {

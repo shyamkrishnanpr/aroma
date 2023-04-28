@@ -34,48 +34,7 @@ const addProduct = async (req, res, next) => {
 const postProduct = async (req, res, next) => {
   try {
 
-    // Perform validation
-    const errors = {};
-
-    if (!req.body.name) {
-      errors.name = 'Please enter a product name';
-    }
-
-    if (!req.body.price) {
-      errors.price = 'Please enter a valid price';
-    }
-
-    if (!req.body.description) {
-      errors.description = 'Please enter a description';
-    }
-
-    if (!req.body.brand) {
-      errors.brand = 'Please enter a brand';
-    }
-
-    if (!req.body.stock) {
-      errors.stock = 'Please enter a valid number';
-    }
-
-    if (!req.body.size) {
-      errors.size = 'Please enter a size';
-    }
-
-    if (!req.body.images) {
-      errors.images = 'Please add the image files';
-    }
-
-    if (!req.body.category) {
-      errors.category = 'Please select the category';
-    }
-
-    if (!req.body.subCategory) {
-      errors.subCategory = 'Please select the subcategory';
-    }
-
-    if (Object.keys(errors).length) {
-      return res.status(400).json({ errors });
-    }
+   
 
     // Save the product
     const images = req.files.map((file) => ({

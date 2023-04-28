@@ -11,29 +11,32 @@
           <label for="country">Select Shipping Address</label>
           <div class="default-select">
             <select
-      required
-      aria-placeholder="select your address"
-      class="form-control form-select mt-2"
-      style="color: #000"
-      onchange="updateAddressDetail(this.value)"
-      id="addressSelect"
-    >
-      <% if (userData.addressDetail && userData.addressDetail.length> 0){
-         %> <% for (let i=0; i < userData.addressDetail.length; i++) { %>
-        <option value="<%=userData.addressDetail[i]._id%>"
-          <% if (i == 0) { %> selected <% } %>
-        >               
-          <%=userData.addressDetail[i].housename%>,
-          <%=userData.addressDetail[i].postoffice%>,
-          <%=userData.addressDetail[i].area%>,
-          <%=userData.addressDetail[i].district%>,
-          <%=userData.addressDetail[i].state%>,
-          <%=userData.addressDetail[i].pin%>,
-        </option>
-      <% } %> <% } else { %>
-        <p>No address selected</p>
-      <% } %>
-    </select>
+            required
+            aria-placeholder="select your address"
+            class="form-control form-select mt-2"
+            style="color: #000"
+            onchange="updateAddressDetail(this.value)"
+            id="addressSelect"
+          >
+            <% if (userData.addressDetail && userData.addressDetail.length > 0) {
+              for (let i = 0; i < userData.addressDetail.length; i++) { %>
+                <option value="<%= userData.addressDetail[i]._id %>"
+                  <% if (userData.addressDetail.length === 1 || i === 0) { %> selected <% } %>
+                >               
+                  <%= userData.addressDetail[i].housename %>,
+                  <%= userData.addressDetail[i].postoffice %>,
+                  <%= userData.addressDetail[i].area %>,
+                  <%= userData.addressDetail[i].district %>,
+                  <%= userData.addressDetail[i].state %>,
+                  <%= userData.addressDetail[i].pin %>,
+                </option>
+            <% }
+            } else { %>
+              <p>No address selected</p>
+            <% } %>
+          </select>
+          
+          
           </div>
           <hr>
           <form
@@ -108,12 +111,6 @@
                           " class="form-control" placeholder="" fdprocessedid="4xtq1b" />
                       </div>
                     </div>
-
-           
-    
-
-         
-
         </div>
         <div class="col-lg-4">
           <div class="order_box">
@@ -214,11 +211,6 @@
    
  </form>
 
-
-        
-          
-          
-
           </div>
         </div>
       </div>
@@ -229,30 +221,53 @@
 
 
 <script>
-    async function updateAddressDetail(addressId) {
-      const res = await fetch("/getAddressDetail/" + addressId);
+  async function updateAddressDetail(addressId) {
+  const res = await fetch("/getAddressDetail/" + addressId);
+  const data = await res.json();
+
+  if (data.message === "No addresses") {
+    clearAddressFields();
+  } else {
+    setAddressFields(data);
+    saveAddressDataToLocalStorage(data);
+  }
+}
+
+function setAddressFields(data) {
+  document.querySelector("#phonenumber").value = data.phonenumber;
+  document.querySelector("#housename").value = data.housename;
+  document.querySelector("#postoffice").value = data.postoffice;
+  document.querySelector("#area").value = data.area;
+  document.querySelector("#district").value = data.district;
+  document.querySelector("#state").value = data.state;
+  document.querySelector("#pin").value = data.pin;
+}
+
+function clearAddressFields() {
+  document.querySelector("#phonenumber").value = "";
+  document.querySelector("#housename").value = "";
+  document.querySelector("#postoffice").value = "";
+  document.querySelector("#area").value = "";
+  document.querySelector("#district").value = "";
+  document.querySelector("#state").value = "";       
+  document.querySelector("#pin").value = "";
+}
+
+function saveAddressDataToLocalStorage(data) {
+  sessionStorage.setItem("addressData", JSON.stringify(data));
+}
+
+const storedAddressData = JSON.parse(sessionStorage.getItem("addressData"));
+
+if (storedAddressData) {
+  setAddressFields(storedAddressData);
+}
 
 
-      const data = await res.json();
-      if (data.message === "No addresses") {
-        document.querySelector("#phonenumber").value = "";
-        document.querySelector("#housename").value = "";
-        document.querySelector("#postoffice").value = "";
-        document.querySelector("#area").value = "";
-        document.querySelector("#district").value = "";
-        document.querySelector("#state").value = "";       
-        document.querySelector("#pin").value = "";
-      } else {
-        document.querySelector("#phonenumber").value = data.phonenumber;
-        document.querySelector("#housename").value = data.housename;
-        document.querySelector("#postoffice").value = data.postoffice;
-        document.querySelector("#area").value = data.area;
-        document.querySelector("#district").value = data.district;
-        document.querySelector("#state").value = data.state;
-        document.querySelector("#pin").value = data.pin;
-      }
-    }
     </script>
+
+
+    
 
 
     
