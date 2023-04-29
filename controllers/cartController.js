@@ -125,7 +125,7 @@ const viewCart = async (req, res, next) => {
       return accumulator + object.productPrice;
     }, 0);
 
-    console.log("The sum in view cart is ",sum)
+  
     countInCart = productData.length;
 
     res.render("users/cart", { user, productData, sum, countInCart });
@@ -204,21 +204,22 @@ const changeQuantity = async (req, res, next) => {
             },
             {
               $group:{
-                _id:null,               
+                _id:"$productItem",               
                 total:{
                   $sum:{$multiply:["$productQuantity","$productDetail.price"]}
-                }
+
+                },
+           
               }
             }
           ]).exec();
 
           const sum = productData.reduce((accumulator, object) => {
-            return accumulator + object.productPrice;
+            return accumulator + object.total;
           }, 0);
 
-          console.log(productData)
         
-          res.json({ success: true, productData: productData,sum});
+          res.json({ success: true, productData: productData ,sum});
         });
 
     }

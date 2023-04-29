@@ -175,7 +175,18 @@ function addToCart(id) {
         if (response.success) {
 
           document.getElementById(productId).value = parseInt(quantity) + count;       
-          document.getElementById("sum").innerHTML = "₹" + response.productData[0].total;
+          document.getElementById("sum").innerHTML = "₹" + response.sum;
+        
+
+          response.productData.forEach((product) => {
+          const productId = product._id;
+          const total = product.total;
+
+          const element = document.querySelector(`#sum1${productId}`);
+          if (element) {
+             element.innerHTML = "₹" + total;
+          }
+         });
     
           console.log(response);
         }
