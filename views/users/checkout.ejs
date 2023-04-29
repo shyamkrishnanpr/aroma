@@ -17,24 +17,23 @@
             style="color: #000"
             onchange="updateAddressDetail(this.value)"
             id="addressSelect"
-          >
+        >
             <% if (userData.addressDetail && userData.addressDetail.length > 0) {
-              for (let i = 0; i < userData.addressDetail.length; i++) { %>
-                <option value="<%= userData.addressDetail[i]._id %>"
-                  <% if (userData.addressDetail.length === 1 || i === 0) { %> selected <% } %>
-                >               
-                  <%= userData.addressDetail[i].housename %>,
-                  <%= userData.addressDetail[i].postoffice %>,
-                  <%= userData.addressDetail[i].area %>,
-                  <%= userData.addressDetail[i].district %>,
-                  <%= userData.addressDetail[i].state %>,
-                  <%= userData.addressDetail[i].pin %>,
-                </option>
-            <% }
+                for (let i = 0; i < userData.addressDetail.length; i++) { %>
+                    <option value="<%= userData.addressDetail[i]._id %>">               
+                        <%= userData.addressDetail[i].housename %>,
+                        <%= userData.addressDetail[i].postoffice %>,
+                        <%= userData.addressDetail[i].area %>,
+                        <%= userData.addressDetail[i].district %>,
+                        <%= userData.addressDetail[i].state %>,
+                        <%= userData.addressDetail[i].pin %>
+                    </option>
+                <% }
             } else { %>
-              <p>No address selected</p>
+                <option value="" disabled selected>No address added</option>
             <% } %>
-          </select>
+        </select>
+        
           
           
           </div>
@@ -253,6 +252,11 @@ function clearAddressFields() {
   document.querySelector("#pin").value = "";
 }
 
+const addressSelect = document.querySelector("#addressSelect");
+  if (addressSelect.length === 1) {
+    addressSelect.selectedIndex = 0;
+    updateAddressDetail(addressSelect.value);
+  }
 function saveAddressDataToLocalStorage(data) {
   sessionStorage.setItem("addressData", JSON.stringify(data));
 }
@@ -263,21 +267,12 @@ if (storedAddressData) {
   setAddressFields(storedAddressData);
 }
 
-
     </script>
 
-
-    
-
-
-    
-
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <script>
-
   function razorpay(order){
-
-    
     var options = {
     "key": 'rzp_test_uOcx6rNQzqB5Di', // Enter the Key ID generated from the Dashboard
     "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -314,7 +309,6 @@ rzp1.on('payment.failed', function (response){
 rzp1.open();
   }
 
-
   function verifyPayment(payment, order) {
     console.log("helllo ajax")
     $.ajax({
@@ -340,19 +334,7 @@ rzp1.open();
     });
   }
 
-
-  
-
-
-
-
 </script>
-
-
-
-
-
-
 
 
 
