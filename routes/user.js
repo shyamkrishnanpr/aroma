@@ -19,6 +19,8 @@ router.get('/register',auth.verifyLoginUser, userController.getRegister);
 
 router.post('/postRegister',auth.verifyLoginUser,userController.postRegister);
 
+router.post('/otp', userController.postOtp);
+
 router.get('/login',auth.verifyLoginUser,userController.getLogin);
 
 router.post('/postLogin',userController.postLogin);

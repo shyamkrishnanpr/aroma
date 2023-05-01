@@ -1,0 +1,47 @@
+<%-include('../layouts/loginHeader') %>
+
+<section class="login_box_area section-margin">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="login_box_img">
+                    <div class="hover">
+                        <h4>New to our website?</h4>
+                        <p>There are advances being made in science and technology everyday, and a good example of this is the</p>
+                        <a class="button button-account" href="/register">Create an Account</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="login_form_inner">
+                    <h3>Enter OTP here</h3>
+
+
+
+                    <form action="/otp" method="post">
+                        <%if(locals.userInfo){%> 
+                            <input type="hidden" name="username" id="username" class="form-control" value="<%=userInfo.username%>"/>
+                            <input type="hidden" name="email" id="email" class="form-control" value="<%=userInfo.email%>"/>
+                            <input type="hidden" name="phonenumber" id="phonenumber" class="form-control" value="<%=userInfo.phonenumber%>"/>
+                            <input type="hidden" name="password" id="password" class="form-control" value="<%=userInfo.password%>"/>
+                            <%}%>
+                        <input name="otp" type="text" placeholder="OTP" id="otp" class="form-control my-3" />
+                        <% if(locals.invalid){%>
+                            <small class="text-danger"><%=invalid%></small>
+                        <%}%>
+                    <button type="submit" value="submit"  class="btn btn-info w-75 text-white">Submit</button>
+                </form>
+
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<%-include('../layouts/footer') %>

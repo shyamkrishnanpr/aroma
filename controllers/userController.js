@@ -1,9 +1,10 @@
 const User = require('../model/userSchema')
 const products = require('../model/productSchema')
 const userVerification = require('../model/userVerificationSchema')
-const userOtp = require('../model/otpVerification')
+const otp = require("../model/otpSchema");
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+const mailSender = require("../config/mailSender");
 const {v4:uuidv4}= require('uuid');
 const randomstring = require('randomstring');
 const crypto = require('crypto')
@@ -71,29 +72,34 @@ const postRegister = async (req, res, next) => {
   try {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(req.body.password, salt);
+    const username =  req.body.username;
+    const email = req.body.email;
+    const phonenumber = req.body.phonenumber;
+    const password = hashPassword
 
     const userData = await User.findOne({ email: req.body.email })
 
     if (userData) {
       res.render("users/register", { err_message: 'User already exists' })
     } else {
-      const user = new User({
-        username: req.body.username,
-        email: req.body.email,
-        phonenumber: req.body.phonenumber,
-        password: hashPassword,
-        is_admin: 0,
-        verified:false 
-      });
+      const User = {
+        username: username,
+        email: email,
+        phonenumber: phonenumber,
+        password: password,     
+      };
 
-      await user.save();
-      // await user.save()
-      // .then((result)=>{
-      //   sendVerificationEmail(result,res);
-      // })
+      mailSender(User).then(async(mailer)=>{
+        if (mailer) {
+          const userInfo = await otp.findOne({email:email});
+          
+          res.render("users/otp",{userInfo})
+        } else {
+          console.log("otp failed",)
+        }
+      })
 
-
-      res.redirect('/login')
+  
     }
   } catch (err) {
     console.log(err);
@@ -101,56 +107,42 @@ const postRegister = async (req, res, next) => {
   }
 };
 
-// const sendVerificationEmail = ({_id,email},res)=>{
-//   const currentUrl = "http://localhost:3000/";
-//   const uniqueString = uuidv4()+_id;
-//   const mailOptions = {
-//     from: process.env.EMAIL,
-//     to:email,
-//     subject: "verify your email",
-//     html: `<p>verify email to complete signup.</p>
-//     <a> href=${currentUrl + "user/verify/"+_id+"/"+uniqueString}`
-//   };
-//   const saltRounds = 10;
-//   bcrypt
-//   .hash(uniqueString,saltRounds)
-//   .then((hashedUniqueString)=>{
-//     const newVerification = new userVerification({
-//       userId:_id,
-//       uniqueString:hashedUniqueString,
-//       createdAt:Date.now(),
-//       expiresAt:Date.now()+21600000,
-//     });
-//     newVerification
-//     .save()
-//     .then(()=>{
-//       transporter
-//       .sendMail(mailOptions)
-//       .then()
-//       .catch((error)=>{
-//         console.log(error);
-//         res.json({       
-//           status:"PENDING",
-//           message:"email failed"
-//         })
-//       })
+// otp page 
 
-//     })
-//     .catch((error)=>{
-//       console.log(error);
-//       res.json({
-//         status:"FAILED",
-//         message:"couldnt save verification"
-//       })
-//     })
-//   })
-//   .catch(()=>{
-//     res.json({
-//       status:"FAILED",
-//       message:"Error occur while hashing"
-//     })
-//   })
-// }
+const postOtp = async (req, res, next) => {
+  try {
+
+    const body = req.body;
+    const cotp = body.otp;
+    const sendOtp = await otp.findOne({ email: body.email });
+console.log("the sendOtp is ",sendOtp)
+    const validOtp = await bcrypt.compare(cotp, sendOtp.otp);
+
+    if (validOtp) {
+      res.redirect("/login");
+    
+      User.create({
+        username: body.username,
+        email: body.email,
+        phonenumber: body.phonenumber,
+        password: body.password,
+      });
+      await otp.findOneAndDelete({ email: body.email })
+    } else {
+      const userData = await otp.findOne({ email: body.email });
+      res.render("users/otp", { userData, invalid: "invalid otp" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+
+
+
+
+
 
 
 //login page
@@ -344,6 +336,7 @@ module.exports = {
   getHome,
   getRegister,
   postRegister,
+  postOtp,
   getLogin,
   postLogin,
   userLogout,
@@ -351,7 +344,8 @@ module.exports = {
   editProfile,
   postEditProfile,
   getAddress,
-  addNewAddress
+  addNewAddress,
+
 
 }
 
