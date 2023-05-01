@@ -110,7 +110,7 @@ const logout = async (req, res, next) => {
 // admin users list
 const usersList = async (req, res, next) => {
   try {
-    const usersData = await User.find({ is_admin: 0 });
+    const usersData = await User.find();
     res.render("admin/usersList", { users: usersData });
   } catch (error) {
     console.log(error.message);
